@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lastcruise.controller.Controller;
 import com.lastcruise.model.AllSounds;
 import com.lastcruise.model.Music;
+import com.lastcruise.model.SoundEffect;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -19,6 +20,8 @@ public class Main {
 
       URL backgroundMusic = Main.class.getResource(AllSounds.ALL_SOUNDS.get("main"));
       Music.runAudio(backgroundMusic);
+      URL sound = Main.class.getResource(AllSounds.ALL_SOUNDS.get("run"));
+      SoundEffect.runAudio(sound);
 
       while(runGame){
         runGame = controller.getCommand();
