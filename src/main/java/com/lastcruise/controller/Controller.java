@@ -279,6 +279,9 @@ public class Controller {
                 } else if (command[1].equals("on") || command[1].equals("unmute")) {
                     Music.unMuteMusic();
                     break;
+                } else {
+                    message = view.getInvalidCommandMessage() + view.getHelpCommands();
+                    break;
                 }
             }
             case SOUND: {
@@ -293,6 +296,9 @@ public class Controller {
                     break;
                 } else if (command[1].equals("on") || command[1].equals("unmute")) {
                     SoundEffect.unMuteSoundFx();
+                    break;
+                } else {
+                    message = view.getInvalidCommandMessage() + view.getHelpCommands();
                     break;
                 }
             }
