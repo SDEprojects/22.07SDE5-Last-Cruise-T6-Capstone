@@ -36,6 +36,23 @@ public class TileManager {
       tile[2].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/water.png")));
       tile[2].setCollision(true);
 
+      tile[3] = new Tile();
+      tile[3].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png")));
+      tile[3].setCollision(true);
+
+      tile[4] = new Tile();
+      tile[4].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png")));
+
+      tile[5] = new Tile();
+      tile[5].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/dark.png")));
+
+      tile[6] = new Tile();
+      tile[6].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png")));
+
+      tile[7] = new Tile();
+      tile[7].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/stalagmite.png")));
+      tile[7].setCollision(true);
+
     } catch (IOException e) {
       e.printStackTrace();
     }

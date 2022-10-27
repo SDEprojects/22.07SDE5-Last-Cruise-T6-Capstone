@@ -73,7 +73,11 @@ public class GamePanel extends JPanel implements Runnable {
       int leftCol = (player.getX() + player.getSolidArea().x - player.getSpeed()) / tileSize;
       int rightCol = (player.getX() + player.getSolidArea().x + player.getSolidArea().width + player.getSpeed()) / tileSize;
 
-      player.setCollisionOn(collision.checkTile(topRow, bottomRow, leftCol, rightCol, player.getDirection()));
+      try {
+        player.setCollisionOn(collision.checkTile(topRow, bottomRow, leftCol, rightCol, player.getDirection()));
+      } catch (ArrayIndexOutOfBoundsException e) {
+        player.setCollisionOn(true);
+      }
       // IF COLLISION IS FALSE THE PLAYER CAN MOVE
       player.updatePosition();
     }

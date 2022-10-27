@@ -13,9 +13,9 @@ import java.util.List;
     property = "type")
 @JsonSubTypes({
     @Type(value = CraftingLocation.class, name = "crafting"),
-    @Type(value = GameLocation.class, name = "normal")
+    @Type(value = Map.class, name = "normal")
 })
-public class GameLocation {
+public class Map {
     private String name;
     private String description;
     private String north;
@@ -23,9 +23,10 @@ public class GameLocation {
     private String east;
     private String west;
     private Inventory items;
+    private String filepath;
 
     // Constructor
-    public GameLocation() {
+    public Map() {
     }
 
     public String getName() {
