@@ -9,8 +9,8 @@ import com.lastcruise.model.Game;
 import com.lastcruise.model.GameMap.InvalidLocationException;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.Music;
-import com.lastcruise.model.Player.ItemNotEdibleException;
-import com.lastcruise.model.Player.NoEnoughStaminaException;
+import com.lastcruise.model.entity.Player.ItemNotEdibleException;
+import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import com.lastcruise.model.PuzzleClient;
 import com.lastcruise.model.SoundEffect;
 import com.lastcruise.view.View;
@@ -31,7 +31,7 @@ public class Controller {
     private boolean keepPlaying = true;
     private final GameLoader gameLoader = new GameLoader();
 
-    public boolean gameSetUp() {
+    public boolean  Up() {
         String input;
         boolean start = false;
         view.printGameBanner();
@@ -279,6 +279,9 @@ public class Controller {
                 } else if (command[1].equals("on") || command[1].equals("unmute")) {
                     Music.unMuteMusic();
                     break;
+                } else {
+                    message = view.getInvalidCommandMessage() + view.getHelpCommands();
+                    break;
                 }
             }
             case SOUND: {
@@ -293,6 +296,9 @@ public class Controller {
                     break;
                 } else if (command[1].equals("on") || command[1].equals("unmute")) {
                     SoundEffect.unMuteSoundFx();
+                    break;
+                } else {
+                    message = view.getInvalidCommandMessage() + view.getHelpCommands();
                     break;
                 }
             }

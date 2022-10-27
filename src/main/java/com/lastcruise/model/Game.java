@@ -3,10 +3,9 @@ package com.lastcruise.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lastcruise.model.GameMap.InvalidLocationException;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
-import com.lastcruise.model.Player.ItemNotEdibleException;
-import com.lastcruise.model.Player.NoEnoughStaminaException;
-import java.util.List;
-import java.util.Map;
+import com.lastcruise.model.entity.Player;
+import com.lastcruise.model.entity.Player.ItemNotEdibleException;
+import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import java.util.Set;
 
 public class Game {
@@ -42,7 +41,7 @@ public class Game {
         this.gameMap = gameMap;
     }
     @JsonIgnore
-    public GameLocation getCurrentLocation() {
+    public Map getCurrentLocation() {
         return gameMap.getCurrentLocation();
     }
 
@@ -57,7 +56,7 @@ public class Game {
     }
 
     @JsonIgnore
-    public Map<String, Item> getCurrentLocationItems() {
+    public java.util.Map<String, Item> getCurrentLocationItems() {
         return gameMap.getCurrentLocation().getItems().getInventory();
     }
 
@@ -112,7 +111,7 @@ public class Game {
     }
 
     public boolean craftRaft() {
-        Map<String, Item> currLocationInventory = getCurrentLocation().getItems().getInventory();
+        java.util.Map<String, Item> currLocationInventory = getCurrentLocation().getItems().getInventory();
         Set<String> requiredForRaft = GameItems.GAME_ITEMS_HASHMAP.get("raft").getRequired();
 
         if (currLocationInventory.keySet()
