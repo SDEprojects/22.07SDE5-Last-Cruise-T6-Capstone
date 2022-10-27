@@ -4,7 +4,8 @@
     "name": "BEACH",
     "description": "There are sights of beautiful birds that fly all over the dry shore land and over the seawaters.\n Wind blowing strongly, and waves crashing against the shore.\n As you stroll along, you can feel the soft smooth green sand under your feet.\n The sand is very hot and walking through it feels like you are walking on a burning grill.\n You must brave the conditions, gather your items here, and build a raft.\n ",
     "itemNames": [],
-    "north": "JUNGLE"
+    "north": "JUNGLE",
+    "filepath": "/maps/beach.txt"
   },
   {
     "type": "normal",
@@ -19,7 +20,8 @@
     "north": "LAKE",
     "south": "BEACH",
     "east" : "CAVE",
-    "west" : "OLD MINE"
+    "west" : "OLD MINE",
+    "filepath": "/maps/jungle.txt"
   },
   {
     "type": "normal",
@@ -29,7 +31,8 @@
       "paddle",
       "fish"
     ],
-    "south": "JUNGLE"
+    "south": "JUNGLE",
+    "filepath": "/maps/lake.txt"
   },
   {
     "type": "normal",
@@ -40,7 +43,8 @@
       "rocks",
       "mushroom"
     ],
-    "west": "JUNGLE"
+    "west": "JUNGLE",
+    "filepath": "/maps/cave.txt"
   },
   {
     "type": "normal",
@@ -51,14 +55,16 @@
       "machete"
     ],
     "east": "JUNGLE",
-    "west": "PIT"
+    "west": "PIT",
+    "filepath": "/maps/old-mine.txt"
   },
   {
     "type": "normal",
     "name": "PIT",
     "description": " 250 meters deep, air filled with a substance that makes you fall asleep. ",
     "itemNames": [],
-    "east": "OLD MINE"
+    "east": "OLD MINE",
+    "filepath": "/maps/pit.txt"
   }
 
 ]

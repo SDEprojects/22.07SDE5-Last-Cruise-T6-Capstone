@@ -7,39 +7,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @JsonPropertyOrder({"locations", "currentLocationName"})
 public class GameMap {
 
   // list of locations
-  private Map<String, GameLocation> locations;
+  private java.util.Map<String, Map> locations;
   @JsonIgnore
-  private GameLocation currentLocation;
+  private Map currentLocation;
 
   // Constructors
   public GameMap() {
-    Map<String, GameLocation> mapOfLocations = generateLocations();
+    java.util.Map<String, Map> mapOfLocations = generateLocations();
     this.locations = mapOfLocations;
   }
 
-  public void setStartLocation(GameLocation startLocation) {
+  public void setStartLocation(Map startLocation) {
     currentLocation = startLocation;
   }
 
   // Business Methods
-  private Map<String, GameLocation> generateLocations() {
+  private java.util.Map<String, Map> generateLocations() {
 
-    Map<String, GameLocation> stringGameLocationHashMap = new HashMap<>();
+    java.util.Map<String, Map> stringGameLocationHashMap = new HashMap<>();
     ObjectMapper mapper = new ObjectMapper();
 
     // try with resources to automatically close the file
-    try(InputStream jsonLocations = Thread.currentThread().getContextClassLoader().getResourceAsStream("json/locations.json")) {
-      List<GameLocation> locationsDecoded = mapper.readValue(jsonLocations,
-          new TypeReference<List<GameLocation>>() {
+    try(InputStream jsonLocations = Thread.currentThread().getContextClassLoader().getResourceAsStream(
+        "json/maps.json")) {
+      List<Map> locationsDecoded = mapper.readValue(jsonLocations,
+          new TypeReference<List<Map>>() {
           });
 
-      for (GameLocation location : locationsDecoded) {
+      for (Map location : locationsDecoded) {
         stringGameLocationHashMap.put(location.getName(), location);
       }
 
@@ -49,19 +49,19 @@ public class GameMap {
     return stringGameLocationHashMap;
   }
 
-  public Map<String, GameLocation> getLocations() {
+  public java.util.Map<String, Map> getLocations() {
     return locations;
   }
 
-  public void setLocations(Map<String, GameLocation> locations) {
+  public void setLocations(java.util.Map<String, Map> locations) {
     this.locations = locations;
   }
 
-  public GameLocation getCurrentLocation() {
+  public Map getCurrentLocation() {
     return currentLocation;
   }
 
-  public void setCurrentLocation(GameLocation currentLocation) {
+  public void setCurrentLocation(Map currentLocation) {
     this.currentLocation = currentLocation;
   }
 
