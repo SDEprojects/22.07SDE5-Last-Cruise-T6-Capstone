@@ -12,7 +12,7 @@ public class Item {
     private Set<String> required;
     private BufferedImage image;
     private boolean collision = false;
-    private int worldX, worldY;
+    private int x, y;
 
     public BufferedImage getImage() {
         return image;
