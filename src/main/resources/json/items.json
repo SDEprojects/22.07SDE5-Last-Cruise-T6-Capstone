@@ -2,7 +2,10 @@
   {
     "name": "log",
     "description": "a long piece of wood. You need something sharp to cut it down",
-    "required": ["machete"]
+    "required": ["machete"],
+    "x": 3,
+    "y": 10,
+    "image": "/objects/key.png"
   },
   {
     "name": "rope",
