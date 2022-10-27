@@ -3,9 +3,9 @@ package com.lastcruise.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lastcruise.model.GameMap.InvalidLocationException;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
-import com.lastcruise.model.Player.ItemNotEdibleException;
-import com.lastcruise.model.Player.NoEnoughStaminaException;
-import java.util.List;
+import com.lastcruise.model.entity.Player;
+import com.lastcruise.model.entity.Player.ItemNotEdibleException;
+import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import java.util.Map;
 import java.util.Set;
 
