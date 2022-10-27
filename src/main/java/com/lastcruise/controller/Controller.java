@@ -31,7 +31,7 @@ public class Controller {
     private boolean keepPlaying = true;
     private final GameLoader gameLoader = new GameLoader();
 
-    public boolean gameSetUp() {
+    public boolean  Up() {
         String input;
         boolean start = false;
         view.printGameBanner();

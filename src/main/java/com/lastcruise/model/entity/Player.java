@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
     public Player() {
-        setSolidArea(new Rectangle(16,32,16,16));
+        setSolidArea(new Rectangle(8,16,32,32));
         setDefaultValues();
         getPlayerImage();
     }
@@ -110,7 +110,7 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawImage(image, getX(), getY(), tileSize, tileSize, null);
+        g2.drawImage(image, getX(), getY(), tileSize*2, tileSize*2, null);
     }
 
     // ================================ ORIGINAL GAME PLAY========================================

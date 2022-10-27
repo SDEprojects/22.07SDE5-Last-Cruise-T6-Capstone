@@ -31,6 +31,9 @@ public class Main {
     window.setLocationRelativeTo(null);
     window.setVisible(true);
 
+    // Set up the game board and place items before the game starts
+    gamePanel.setupGame();
+
     gamePanel.startGameThread();
 
 
