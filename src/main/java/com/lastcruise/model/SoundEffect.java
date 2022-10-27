@@ -29,19 +29,35 @@ public class SoundEffect {
         }
     }
     public static void decreaseFxVolume(){
-        soundFxVolume = musicControl.getValue() - 7.0f;
+        try {
+            soundFxVolume = musicControl.getValue() - 7.0f;
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void increaseFxVolume(){
-        soundFxVolume = musicControl.getValue() + 7.0f;
+        try {
+            soundFxVolume = musicControl.getValue() + 7.0f;
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public static void muteSoundFx(){
-        tempFxVolume = soundFxVolume;
-        soundFxVolume = musicControl.getMinimum();
+    public static void muteSoundFx() {
+        try {
+            tempFxVolume = soundFxVolume;
+            soundFxVolume = musicControl.getMinimum();
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void unMuteSoundFx(){
-        soundFxVolume = tempFxVolume;
+        try {
+            soundFxVolume = tempFxVolume;
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 }
