@@ -1,6 +1,7 @@
 package com.lastcruise.model;
 
 import com.lastcruise.controller.KeyHandler;
+import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.tile.TileManager;
 import java.awt.Color;
@@ -81,6 +82,12 @@ public class GamePanel extends JPanel implements Runnable {
       // IF COLLISION IS FALSE THE PLAYER CAN MOVE
       player.updatePosition();
     }
+
+    // check item collision
+    String itemName = collision.checkItem(player, true, inventory);
+    pickupItem(itemName);
+
+
   }
 
   public void paintComponent(Graphics g) {
@@ -111,6 +118,16 @@ public class GamePanel extends JPanel implements Runnable {
     // set inventory to the inventory of the current location
     if (game.getCurrentLocationInventory() != null) {
       this.inventory = game.getCurrentLocationInventory();
+    }
+  }
+
+  public void pickupItem(String itemName){
+    if(itemName != ""){
+      try {
+        inventory.remove(itemName);
+      } catch (InventoryEmptyException e){
+        System.out.println("Item " + itemName + " is not in inventory!");
+      }
     }
   }
 

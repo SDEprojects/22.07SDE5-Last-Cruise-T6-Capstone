@@ -3,8 +3,8 @@
     "name": "log",
     "description": "a long piece of wood. You need something sharp to cut it down",
     "required": ["machete"],
-    "x": 3,
-    "y": 10,
+    "x": 7,
+    "y": 7,
     "image": "/objects/key.png"
   },
   {
