@@ -9,11 +9,17 @@
   },
   {
     "name": "rope",
-    "description": "a sturdy rope hanging from a tree"
+    "description": "a sturdy rope hanging from a tree",
+    "x": 12,
+    "y": 6,
+    "image": "/objects/key.png"
   },
   {
     "name": "machete",
-    "description": "sharp metal machete that can be used to cut items"
+    "description": "sharp metal machete that can be used to cut items",
+    "x": 13,
+    "y": 1,
+    "image": "/objects/key.png"
   },
   {
     "name": "paddle",

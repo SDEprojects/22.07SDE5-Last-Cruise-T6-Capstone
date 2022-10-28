@@ -22,10 +22,8 @@ public class Player extends Entity {
         setX(0);
         setY(0);
         setSpeed(4);
-//        setSolidAreaX(8);
-//        setSolidAreaY(16);
-//        setSolidAreaDefaultX(8);
-//        setSolidAreaDefaultY(16);
+        setSolidAreaX(8);
+        setSolidAreaY(16);
         setSolidAreaDefaultX(8);
         setSolidAreaDefaultY(16);
         setDirection("down");
@@ -118,7 +116,7 @@ public class Player extends Entity {
         }
         System.out.println("Player x: " + getX());
         System.out.println("Player y: " + getY());
-        g2.drawImage(image, getX(), getY(), tileSize, tileSize, null);
+        g2.drawImage(image, getX(), getY(), tileSize*2, tileSize*2, null);
     }
 
     // ================================ ORIGINAL GAME PLAY========================================

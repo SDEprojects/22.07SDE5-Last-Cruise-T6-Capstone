@@ -16,9 +16,9 @@ public class Item {
     private boolean collision = true;
     private int x;
     private int y;
-    private Rectangle solidArea = new Rectangle(0, 0, 32, 32);
-    private final int solidAreaDefaultX = 0;
-    private final int solidAreaDefaultY = 0;
+    private Rectangle solidArea = new Rectangle(8, 16, 32, 32);
+    private final int solidAreaDefaultX = 8;
+    private final int solidAreaDefaultY = 16;
 
 
     public int getSolidAreaDefaultX() {
