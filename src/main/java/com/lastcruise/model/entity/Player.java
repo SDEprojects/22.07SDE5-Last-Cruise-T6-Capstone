@@ -28,10 +28,10 @@ public class Player extends Entity {
         setX(0);
         setY(0);
         setSpeed(4);
-        setSolidAreaX(8);
-        setSolidAreaY(16);
-        setSolidAreaDefaultX(8);
-        setSolidAreaDefaultY(16);
+        setSolidAreaX(12);
+        setSolidAreaY(12);
+        setSolidAreaDefaultX(12);
+        setSolidAreaDefaultY(12);
         setDirection("down");
     }
 
