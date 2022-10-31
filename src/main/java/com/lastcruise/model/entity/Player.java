@@ -19,9 +19,13 @@ public class Player extends Entity {
         getPlayerImage();
     }
     public void setDefaultValues() {
-        setX(100);
-        setY(100);
+        setX(0);
+        setY(0);
         setSpeed(4);
+        setSolidAreaX(8);
+        setSolidAreaY(16);
+        setSolidAreaDefaultX(8);
+        setSolidAreaDefaultY(16);
         setDirection("down");
     }
     public void getPlayerImage() {
@@ -110,6 +114,8 @@ public class Player extends Entity {
                 }
                 break;
         }
+        System.out.println("Player x: " + getX());
+        System.out.println("Player y: " + getY());
         g2.drawImage(image, getX(), getY(), tileSize*2, tileSize*2, null);
     }
 

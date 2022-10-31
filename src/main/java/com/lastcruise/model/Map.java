@@ -23,7 +23,7 @@ public class Map {
     private String east;
     private String west;
     private Inventory items;
-    private String filepath;
+    //private String filepath;
 
     // Constructor
     public Map() {
