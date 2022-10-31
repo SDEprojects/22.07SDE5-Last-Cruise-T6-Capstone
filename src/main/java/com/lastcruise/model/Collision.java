@@ -16,6 +16,7 @@ public class Collision {
     this.tile = tile;
   }
 
+  // checks if players next tile will collide with a collision tile
   public boolean checkTile(int topRow, int bottomRow, int leftCol, int rightCol, String direction) {
 
     int tileNum1, tileNum2;

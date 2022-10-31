@@ -13,21 +13,29 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Player extends Entity {
+    // CONSTRUCTOR
+        // creates a small collide-able area in the player's sprite
+        // sets the initial player position
+        // loads all the images of the player and sets corresponding fields
     public Player() {
-        setSolidArea(new Rectangle(8,16,32,32));
+        setSolidArea(new Rectangle(12,12,24,24));
         setDefaultValues();
         getPlayerImage();
     }
+
+    // setting initial value for player on the map
     public void setDefaultValues() {
         setX(0);
         setY(0);
         setSpeed(4);
-        setSolidAreaX(8);
-        setSolidAreaY(16);
-        setSolidAreaDefaultX(8);
-        setSolidAreaDefaultY(16);
+        setSolidAreaX(12);
+        setSolidAreaY(12);
+        setSolidAreaDefaultX(12);
+        setSolidAreaDefaultY(12);
         setDirection("down");
     }
+
+    // loads all the player sprite images
     public void getPlayerImage() {
         try {
             setUp1(ImageIO.read(getClass().getResourceAsStream("/player/player-up-1.png")));
@@ -43,7 +51,7 @@ public class Player extends Entity {
         }
     }
 
-
+    // updates the new X or Y position based on direction and speed
     public void updatePosition() {
         if (!isCollisionOn()) {
             switch (getDirection()) {
@@ -61,13 +69,16 @@ public class Player extends Entity {
                     break;
             }
         }
+        // sprite counter and sprite num determine which sprite image to use in rendering
+        // makes it look like the player is actually walking
         setSpriteCounter(getSpriteCounter() + 1);
         if (getSpriteCounter() > 10) {
-            setSpriteCounter(getSpriteCounter() == 1 ? 2 : 1);
+            setSpriteNum(getSpriteNum() == 1 ? 2 : 1);
             setSpriteCounter(0);
         }
     }
 
+    // updates the field direction by passing in whether each key is pressed or not
     public void updateDirection(boolean up, boolean down, boolean left, boolean right) {
         if (up) {
             setDirection("up");
@@ -78,10 +89,11 @@ public class Player extends Entity {
         } else if (right) {
             setDirection("right");
         }
-        // CHECK TILE COLLISION
+        // makes sure the player can move
         setCollisionOn(false);
     }
 
+    // get the correct sprite image and draw the player on the map
     public void draw(Graphics2D g2, int tileSize) {
         BufferedImage image = null;
         switch (getDirection()) {
@@ -114,9 +126,8 @@ public class Player extends Entity {
                 }
                 break;
         }
-        System.out.println("Player x: " + getX());
-        System.out.println("Player y: " + getY());
-        g2.drawImage(image, getX(), getY(), tileSize*2, tileSize*2, null);
+        // drawing the player on the game
+        g2.drawImage(image, getX(), getY(), tileSize, tileSize, null);
     }
 
     // ================================ ORIGINAL GAME PLAY========================================

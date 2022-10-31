@@ -41,7 +41,7 @@ public class Game {
         this.gameMap = gameMap;
     }
     @JsonIgnore
-    public Map getCurrentLocation() {
+    public Location getCurrentLocation() {
         return gameMap.getCurrentLocation();
     }
 

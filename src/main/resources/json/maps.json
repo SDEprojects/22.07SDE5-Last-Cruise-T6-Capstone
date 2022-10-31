@@ -4,7 +4,12 @@
     "name": "BEACH",
     "description": "There are sights of beautiful birds that fly all over the dry shore land and over the seawaters.\n Wind blowing strongly, and waves crashing against the shore.\n As you stroll along, you can feel the soft smooth green sand under your feet.\n The sand is very hot and walking through it feels like you are walking on a burning grill.\n You must brave the conditions, gather your items here, and build a raft.\n ",
     "itemNames": ["log", "rope", "machete"],
-    "north": "JUNGLE"
+    "north": {
+      "x": 6,
+      "y": 0,
+      "name": "JUNGLE"
+    },
+    "filepath": "/maps/beach.txt"
   },
   {
     "type": "normal",
@@ -16,10 +21,27 @@
       "banana",
       "berries"
     ],
-    "north": "LAKE",
-    "south": "BEACH",
-    "east" : "CAVE",
-    "west" : "OLD MINE"
+    "north": {
+      "x": 3,
+      "y": 0,
+      "name": "LAKE"
+    },
+    "south": {
+      "x": 7,
+      "y": 10,
+      "name": "BEACH"
+    },
+    "east" : {
+      "x": 15,
+      "y": 3,
+      "name": "CAVE"
+    },
+    "west" : {
+      "x": 0,
+      "y": 8,
+      "name": "OLD MINE"
+    },
+    "filepath": "/maps/jungle.txt"
   },
   {
     "type": "normal",
@@ -29,7 +51,12 @@
       "paddle",
       "fish"
     ],
-    "south": "JUNGLE"
+    "south": {
+      "x": 11,
+      "y": 11,
+      "name": "JUNGLE"
+    },
+    "filepath": "/maps/lake.txt"
   },
   {
     "type": "normal",
@@ -40,7 +67,12 @@
       "rocks",
       "mushroom"
     ],
-    "west": "JUNGLE"
+    "west": {
+      "x": 0,
+      "y": 10,
+      "name": "JUNGLE"
+    },
+    "filepath": "/maps/cave.txt"
   },
   {
     "type": "normal",
@@ -50,15 +82,29 @@
       "steelpipe",
       "machete"
     ],
-    "east": "JUNGLE",
-    "west": "PIT"
+    "east": {
+      "x": 15,
+      "y": 8,
+      "name": "JUNGLE"
+    },
+    "west": {
+      "x": 0,
+      "y": 2,
+      "name": "PIT"
+    },
+    "filepath": "/maps/old-mine.txt"
   },
   {
     "type": "normal",
     "name": "PIT",
     "description": " 250 meters deep, air filled with a substance that makes you fall asleep. ",
     "itemNames": [],
-    "east": "OLD MINE"
+    "east": {
+      "x": 15,
+      "y": 5,
+      "name": "OLD MINE"
+    },
+    "filepath": "/maps/pit.txt"
   }
 
 ]

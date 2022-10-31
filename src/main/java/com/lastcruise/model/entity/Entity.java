@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
         @JsonSubTypes.Type(value = Player.class, name = "player")
     }
 )
+// class that is inherited by player and NPCs
 public class Entity {
 
     private int x, y;

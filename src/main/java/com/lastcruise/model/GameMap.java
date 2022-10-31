@@ -3,6 +3,7 @@ package com.lastcruise.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -12,34 +13,35 @@ import java.util.List;
 public class GameMap {
 
   // list of locations
-  private java.util.Map<String, Map> locations;
+  private java.util.Map<String, Location> locations;
   @JsonIgnore
-  private Map currentLocation;
+  private Location currentLocation;
 
   // Constructors
   public GameMap() {
-    java.util.Map<String, Map> mapOfLocations = generateLocations();
+    java.util.Map<String, Location> mapOfLocations = generateLocations();
     this.locations = mapOfLocations;
   }
 
-  public void setStartLocation(Map startLocation) {
+  public void setStartLocation(Location startLocation) {
     currentLocation = startLocation;
   }
 
   // Business Methods
-  private java.util.Map<String, Map> generateLocations() {
+  private java.util.Map<String, Location> generateLocations() {
 
-    java.util.Map<String, Map> stringGameLocationHashMap = new HashMap<>();
+    java.util.Map<String, Location> stringGameLocationHashMap = new HashMap<>();
     ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
     // try with resources to automatically close the file
     try(InputStream jsonLocations = Thread.currentThread().getContextClassLoader().getResourceAsStream(
         "json/maps.json")) {
-      List<Map> locationsDecoded = mapper.readValue(jsonLocations,
-          new TypeReference<List<Map>>() {
+      List<Location> locationsDecoded = mapper.readValue(jsonLocations,
+          new TypeReference<List<Location>>() {
           });
 
-      for (Map location : locationsDecoded) {
+      for (Location location : locationsDecoded) {
         stringGameLocationHashMap.put(location.getName(), location);
       }
 
@@ -49,19 +51,19 @@ public class GameMap {
     return stringGameLocationHashMap;
   }
 
-  public java.util.Map<String, Map> getLocations() {
+  public java.util.Map<String, Location> getLocations() {
     return locations;
   }
 
-  public void setLocations(java.util.Map<String, Map> locations) {
+  public void setLocations(java.util.Map<String, Location> locations) {
     this.locations = locations;
   }
 
-  public Map getCurrentLocation() {
+  public Location getCurrentLocation() {
     return currentLocation;
   }
 
-  public void setCurrentLocation(Map currentLocation) {
+  public void setCurrentLocation(Location currentLocation) {
     this.currentLocation = currentLocation;
   }
 
@@ -69,19 +71,19 @@ public class GameMap {
     String newLocation = null;
     switch (command[1].toLowerCase()) {
       case "north": {
-        newLocation = currentLocation.getNorth();
+        newLocation = currentLocation.getNorth().get("name");
         break;
       }
       case "south": {
-        newLocation = currentLocation.getSouth();
+        newLocation = currentLocation.getSouth().get("name");
         break;
       }
       case "east": {
-        newLocation = currentLocation.getEast();
+        newLocation = currentLocation.getEast().get("name");
         break;
       }
       case "west": {
-        newLocation = currentLocation.getWest();
+        newLocation = currentLocation.getWest().get("name");
         break;
       }
     }
