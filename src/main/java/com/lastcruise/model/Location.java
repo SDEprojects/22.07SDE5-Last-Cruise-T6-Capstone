@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import java.util.HashMap;
 import java.util.List;
 
 @JsonTypeInfo(
@@ -18,10 +19,10 @@ import java.util.List;
 public class Map {
     private String name;
     private String description;
-    private String north;
-    private String south;
-    private String east;
-    private String west;
+    private HashMap<String, String> north;
+    private HashMap<String, String> south;
+    private HashMap<String, String> east;
+    private HashMap<String, String> west;
     private Inventory items;
     private String filepath;
 
@@ -29,6 +30,21 @@ public class Map {
     public Map() {
     }
 
+    public String checkForMapTransition(int x, int y, String direction) {
+        String xString = String.valueOf(x);
+        String yString = String.valueOf(y);
+        if (direction.equals("up") && north.get("x").equals(xString) && north.get("y").equals(yString)) {
+            return north.get("name");
+        } else if (direction.equals("down") && south.get("x").equals(xString) && south.get("y").equals(yString)) {
+            return south.get("name");
+        } else if (direction.equals("left") && west.get("x").equals(xString) && west.get("y").equals(yString)) {
+            return west.get("name");
+        } else if (direction.equals("right") && east.get("x").equals(xString) && east.get("y").equals(yString)) {
+            return east.get("name");
+        } else {
+            return null;
+        }
+    }
     public String getName() {
         return name;
     }
@@ -45,35 +61,35 @@ public class Map {
         this.description = description;
     }
 
-    public String getNorth() {
+    public HashMap<String, String> getNorth() {
         return north;
     }
 
-    public void setNorth(String north) {
+    public void setNorth(HashMap<String, String> north) {
         this.north = north;
     }
 
-    public String getSouth() {
+    public HashMap<String, String> getSouth() {
         return south;
     }
 
-    public void setSouth(String south) {
+    public void setSouth(HashMap<String, String> south) {
         this.south = south;
     }
 
-    public String getEast() {
+    public HashMap<String, String> getEast() {
         return east;
     }
 
-    public void setEast(String east) {
+    public void setEast(HashMap<String, String> east) {
         this.east = east;
     }
 
-    public String getWest() {
+    public HashMap<String, String> getWest() {
         return west;
     }
 
-    public void setWest(String west) {
+    public void setWest(HashMap<String, String> west) {
         this.west = west;
     }
 
@@ -91,7 +107,13 @@ public class Map {
         this.items = result;
     }
 
+    public String getFilepath() {
+        return filepath;
+    }
 
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
 
     public void setItems(Inventory items) {
         this.items = items;
