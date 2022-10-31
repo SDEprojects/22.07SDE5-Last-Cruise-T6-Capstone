@@ -29,7 +29,9 @@ public class GamePanel extends JPanel implements Runnable {
   private Collision collision = new Collision(tileSize, tileManager.getMapTileIndex(), tileManager.getTile());
   private Game game;
   private Inventory inventory;
+  private GameMap gameMap;
 
+  // CONSTRUCTOR
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
     this.setBackground(Color.black);
@@ -66,21 +68,48 @@ public class GamePanel extends JPanel implements Runnable {
 
   public void update() {
     if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()){
+      // update the player's direction when someone presses W, A, S, or D
       player.updateDirection(keyHandler.isUpPressed(), keyHandler.isDownPressed(), keyHandler.isLeftPressed(), keyHandler.isRightPressed());
 
+      // the bounds of player's collision area
       int topRow = (player.getY() + player.getSolidArea().y - player.getSpeed()) / tileSize;
       int bottomRow = (player.getY() + player.getSolidArea().y + player.getSolidArea().height + player.getSpeed()) / tileSize;
       int leftCol = (player.getX() + player.getSolidArea().x - player.getSpeed()) / tileSize;
       int rightCol = (player.getX() + player.getSolidArea().x + player.getSolidArea().width + player.getSpeed()) / tileSize;
 
+      // check if the next move will collide with a certain tile
+      // out of bounds exception stops player from going off map
       try {
         player.setCollisionOn(collision.checkTile(topRow, bottomRow, leftCol, rightCol, player.getDirection()));
       } catch (ArrayIndexOutOfBoundsException e) {
         player.setCollisionOn(true);
       }
-      // IF COLLISION IS FALSE THE PLAYER CAN MOVE
+
+      // update the position if the player can continue without collision
       player.updatePosition();
+      // check if player needs to change maps
+      transitionMaps();
     }
+  }
+
+  // checks if the map needs to change and places player in correct map and position
+  private void transitionMaps() {
+    int tileX = player.getX() / tileSize;
+    int tileY = player.getY() / tileSize;
+    Location current = gameMap.getCurrentLocation();
+    // checks if the tile is a transition tile and returns current map
+    String newMap = current.checkForMapTransition(tileX, tileY, player.getDirection());
+    if (!current.getName().equals(newMap)){
+      // change current location to new location
+      gameMap.setCurrentLocation(gameMap.getLocations().get(newMap));
+      // places the player at the entrance for the new map
+      int[] entrance = gameMap.getCurrentLocation().getEntranceCoordinates(player.getDirection());
+      player.setX(entrance[0] * tileSize);
+      player.setY(entrance[1] * tileSize);
+      // load the new map
+      tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
+    }
+    System.out.printf("coordinates: [%d, %d]\n", player.getX()/tileSize, player.getY()/tileSize);
   }
 
   public void paintComponent(Graphics g) {
@@ -105,14 +134,21 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setupGame() {
-
-    //System.out.println(game.getCurrentLocationName());
-
     // set inventory to the inventory of the current location
     if (game.getCurrentLocationInventory() != null) {
       this.inventory = game.getCurrentLocationInventory();
     }
+    // create instances of all locations
+    if (game.getGameMap() != null) {
+      this.gameMap = game.getGameMap();
+    }
+    // set the first location (beach)
+    gameMap.setCurrentLocation(gameMap.getLocations().get("BEACH"));
+    // load the initial map
+    tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
+//    System.out.println(gameMap.getCurrentLocation().getNorth().get("x"));
   }
+
 
   public int getTileSize() {
     return tileSize;

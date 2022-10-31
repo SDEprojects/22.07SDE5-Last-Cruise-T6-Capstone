@@ -10,19 +10,22 @@ import javax.imageio.ImageIO;
 
 public class TileManager {
 
-  private Tile[] tile;
-  private int mapTileIndex[][];
-  private int maxScreenCol;
-  private int maxScreenRow;
+  private final Tile[] tile;
+  private final int[][] mapTileIndex;
+  private final int maxScreenCol;
+  private final int maxScreenRow;
+
+  // CONSTRUCTOR
   public TileManager(int maxScreenCol, int maxScreenRow) {
     tile = new Tile[10];
     this.maxScreenCol = maxScreenCol;
     this.maxScreenRow = maxScreenRow;
     mapTileIndex = new int[maxScreenCol][maxScreenRow];
     getTileImage();
-    loadMap("/maps/beach.txt");
   }
 
+  // load the tile images and store them in an array of Tile objects
+  // these indexes are used to make maps through text files
   public void getTileImage() {
     try {
       tile[0] = new Tile();
@@ -53,10 +56,21 @@ public class TileManager {
       tile[7].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/stalagmite.png")));
       tile[7].setCollision(true);
 
+      tile[8] = new Tile();
+      tile[8].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/rock.png")));
+      tile[8].setCollision(true);
+
+      tile[9] = new Tile();
+      tile[9].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/coconut-tree.png")));
+      tile[9].setCollision(true);
+
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
+
+  // uses the filepath of the map in resources to read the text file and store the Tile indexes in a 2D array
+  // the 2D array is used to draw the map
   public void loadMap(String filePath) {
     try {
       InputStream inputStream = getClass().getResourceAsStream(filePath);
@@ -82,8 +96,9 @@ public class TileManager {
       e.printStackTrace();
     }
   }
-  public void draw(Graphics2D g2, int tileSize) {
 
+  // draws the map tile by tile based on the 2D array
+  public void draw(Graphics2D g2, int tileSize) {
     int col = 0;
     int row = 0;
     int x = 0;

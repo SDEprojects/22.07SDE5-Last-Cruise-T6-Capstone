@@ -14,9 +14,9 @@ import java.util.List;
     property = "type")
 @JsonSubTypes({
     @Type(value = CraftingLocation.class, name = "crafting"),
-    @Type(value = Map.class, name = "normal")
+    @Type(value = Location.class, name = "normal")
 })
-public class Map {
+public class Location {
     private String name;
     private String description;
     private HashMap<String, String> north;
@@ -27,23 +27,53 @@ public class Map {
     private String filepath;
 
     // Constructor
-    public Map() {
+    public Location() {
     }
 
+    // checks to see if the player is standing on a map transition tile
+    // returns the name of the new Location or current location
     public String checkForMapTransition(int x, int y, String direction) {
         String xString = String.valueOf(x);
         String yString = String.valueOf(y);
-        if (direction.equals("up") && north.get("x").equals(xString) && north.get("y").equals(yString)) {
-            return north.get("name");
-        } else if (direction.equals("down") && south.get("x").equals(xString) && south.get("y").equals(yString)) {
-            return south.get("name");
-        } else if (direction.equals("left") && west.get("x").equals(xString) && west.get("y").equals(yString)) {
-            return west.get("name");
-        } else if (direction.equals("right") && east.get("x").equals(xString) && east.get("y").equals(yString)) {
-            return east.get("name");
-        } else {
-            return null;
+        try {
+            if (direction.equals("up") && north.get("x").equals(xString) && north.get("y").equals(yString)) {
+                return north.get("name");
+            } else if (direction.equals("down") && south.get("x").equals(xString) && south.get("y").equals(yString)) {
+                return south.get("name");
+            } else if (direction.equals("left") && west.get("x").equals(xString) && west.get("y").equals(yString)) {
+                return west.get("name");
+            } else if (direction.equals("right") && east.get("x").equals(xString) && east.get("y").equals(yString)) {
+                return east.get("name");
+            }
+        } catch (NullPointerException e) {
+            return name;
         }
+        return name;
+    }
+
+    // places the player on the tile in front of the direction they came from
+    public int[] getEntranceCoordinates(String direction) {
+        int newX = 0;
+        int newY = 0;
+        switch (direction) {
+            case "up":
+                newX = Integer.parseInt(south.get("x"));
+                newY = Integer.parseInt(south.get("y"));
+                break;
+            case "down":
+                newX = Integer.parseInt(north.get("x"));
+                newY = Integer.parseInt(north.get("y"));
+                break;
+            case "left":
+                newX = Integer.parseInt(east.get("x"));
+                newY = Integer.parseInt(east.get("y"));
+                break;
+            case "right":
+                newX = Integer.parseInt(west.get("x"));
+                newY = Integer.parseInt(west.get("y"));
+                break;
+        }
+        return new int[]{newX, newY};
     }
     public String getName() {
         return name;
