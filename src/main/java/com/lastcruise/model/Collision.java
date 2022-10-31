@@ -58,11 +58,6 @@ public class Collision {
 
     String itemName = "";
 
-//    int entitySolidAreaX = 0;
-//    int entitySolidAreaY = 0;
-//    int itemSolidAreaX = 0;
-//    int itemSolidAreaY = 0;
-
     // get the list of object in the current map
     if (inventory != null) {
       for (Item item : inventory.getInventory().values()) {
