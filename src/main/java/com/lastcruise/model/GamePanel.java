@@ -3,6 +3,7 @@ package com.lastcruise.model;
 import com.lastcruise.controller.KeyHandler;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.entity.Player;
+import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import com.lastcruise.model.tile.TileManager;
 import com.lastcruise.view.View;
 import java.awt.Color;
@@ -164,10 +165,18 @@ public class GamePanel extends JPanel implements Runnable {
   public void pickupItem(String itemName){
     if(!itemName.equals("")){
       try {
-        inventory.remove(itemName);
+
+
         player.setStamina(player.getStamina() - 10);
+
+        // remove the item from the location inventory and add it to the player inventory
+        game.transferItemFromTo(inventory, player.getInventory(), itemName);
+
       } catch (InventoryEmptyException e){
         System.out.println("Item " + itemName + " is not in inventory!");
+      } catch (NoEnoughStaminaException e) {
+        //throw new RuntimeException(e);
+        System.out.println("Not enough stamina to pickup item!");
       }
     }
   }

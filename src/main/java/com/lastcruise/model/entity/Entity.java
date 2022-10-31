@@ -193,6 +193,7 @@ public class Entity {
     private Inventory inventory;
 
     public Entity() {
+        this.inventory = new Inventory();
     }
 
     // Constructors
