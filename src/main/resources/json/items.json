@@ -19,7 +19,7 @@
     "description": "sharp metal machete that can be used to cut items",
     "x": 1,
     "y": 1,
-    "image": "/objects/key.png"
+    "image": "/items/axe.png"
   },
   {
     "name": "paddle",
