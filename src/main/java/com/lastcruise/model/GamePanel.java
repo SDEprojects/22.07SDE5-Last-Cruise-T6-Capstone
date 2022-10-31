@@ -4,6 +4,7 @@ import com.lastcruise.controller.KeyHandler;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.tile.TileManager;
+import com.lastcruise.view.View;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -31,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
   private Game game;
   private Inventory inventory;
   private GameMap gameMap;
+  private View view = new View();
 
   // CONSTRUCTOR
   public GamePanel() {
@@ -71,52 +73,18 @@ public class GamePanel extends JPanel implements Runnable {
     if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()){
       // update the player's direction when someone presses W, A, S, or D
       player.updateDirection(keyHandler.isUpPressed(), keyHandler.isDownPressed(), keyHandler.isLeftPressed(), keyHandler.isRightPressed());
-
-      // the bounds of player's collision area
-      int topRow = (player.getY() + player.getSolidArea().y - player.getSpeed()) / tileSize;
-      int bottomRow = (player.getY() + player.getSolidArea().y + player.getSolidArea().height + player.getSpeed()) / tileSize;
-      int leftCol = (player.getX() + player.getSolidArea().x - player.getSpeed()) / tileSize;
-      int rightCol = (player.getX() + player.getSolidArea().x + player.getSolidArea().width + player.getSpeed()) / tileSize;
-
-      // check if the next move will collide with a certain tile
-      // out of bounds exception stops player from going off map
-      try {
-        player.setCollisionOn(collision.checkTile(topRow, bottomRow, leftCol, rightCol, player.getDirection()));
-      } catch (ArrayIndexOutOfBoundsException e) {
-        player.setCollisionOn(true);
-      }
-
+      // check if player collides with certain tiles
+      checkForMapCollision();
       // update the position if the player can continue without collision
       player.updatePosition();
+      // update player stamina status
+      player.updateStamina();
       // check if player needs to change maps
-      transitionMaps();
+      updateMap();
     }
-
     // check item collision
     String itemName = collision.checkItem(player, true, inventory);
     pickupItem(itemName);
-
-
-  }
-
-  // checks if the map needs to change and places player in correct map and position
-  private void transitionMaps() {
-    int tileX = player.getX() / tileSize;
-    int tileY = player.getY() / tileSize;
-    Location current = gameMap.getCurrentLocation();
-    // checks if the tile is a transition tile and returns current map
-    String newMap = current.checkForMapTransition(tileX, tileY, player.getDirection());
-    if (!current.getName().equals(newMap)){
-      // change current location to new location
-      gameMap.setCurrentLocation(gameMap.getLocations().get(newMap));
-      // places the player at the entrance for the new map
-      int[] entrance = gameMap.getCurrentLocation().getEntranceCoordinates(player.getDirection());
-      player.setX(entrance[0] * tileSize);
-      player.setY(entrance[1] * tileSize);
-      // load the new map
-      tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
-    }
-    System.out.printf("coordinates: [%d, %d]\n", player.getX()/tileSize, player.getY()/tileSize);
   }
 
   public void paintComponent(Graphics g) {
@@ -131,12 +99,14 @@ public class GamePanel extends JPanel implements Runnable {
           item.draw(g2, tileSize);
         }
       }
-
     } catch (NullPointerException e) {
       e.printStackTrace();
     }
     // draw player
     player.draw(g2, tileSize);
+
+    // draw stamina bar
+    view.drawPlayerStamina(g2, player.getStamina());
     g2.dispose();
   }
 
@@ -156,18 +126,50 @@ public class GamePanel extends JPanel implements Runnable {
 //    System.out.println(gameMap.getCurrentLocation().getNorth().get("x"));
   }
 
+  private void checkForMapCollision() {
+    // the bounds of player's collision area
+    int topRow = (player.getY() + player.getSolidArea().y - player.getSpeed()) / tileSize;
+    int bottomRow = (player.getY() + player.getSolidArea().y + player.getSolidArea().height + player.getSpeed()) / tileSize;
+    int leftCol = (player.getX() + player.getSolidArea().x - player.getSpeed()) / tileSize;
+    int rightCol = (player.getX() + player.getSolidArea().x + player.getSolidArea().width + player.getSpeed()) / tileSize;
+
+    // check if the next move will collide with a certain tile
+    // out of bounds exception stops player from going off map
+    try {
+      player.setCollisionOn(collision.checkTile(topRow, bottomRow, leftCol, rightCol, player.getDirection()));
+    } catch (ArrayIndexOutOfBoundsException e) {
+      player.setCollisionOn(true);
+    }
+  }
+
+  // checks if the map needs to change and places player in correct map and position
+  private void updateMap() {
+    int tileX = player.getX() / tileSize;
+    int tileY = player.getY() / tileSize;
+    Location current = gameMap.getCurrentLocation();
+    // checks if the tile is a transition tile and returns current map
+    String newMap = current.checkForMapTransition(tileX, tileY, player.getDirection());
+    if (!current.getName().equals(newMap)){
+      // change current location to new location
+      gameMap.setCurrentLocation(gameMap.getLocations().get(newMap));
+      // places the player at the entrance for the new map
+      int[] entrance = gameMap.getCurrentLocation().getEntranceCoordinates(player.getDirection());
+      player.setX(entrance[0] * tileSize);
+      player.setY(entrance[1] * tileSize);
+      // load the new map
+      tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
+    }
+  }
+
   public void pickupItem(String itemName){
-    if(itemName != ""){
+    if(!itemName.equals("")){
       try {
         inventory.remove(itemName);
+        player.setStamina(player.getStamina() - 10);
       } catch (InventoryEmptyException e){
         System.out.println("Item " + itemName + " is not in inventory!");
       }
     }
-  }
-
-  public int getTileSize() {
-    return tileSize;
   }
 
 }

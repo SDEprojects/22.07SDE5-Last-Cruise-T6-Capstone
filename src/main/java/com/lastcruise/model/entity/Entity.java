@@ -31,6 +31,7 @@ public class Entity {
     private boolean collisionOn = false;
     private int solidAreaDefaultX;
     private int solidAreaDefaultY;
+    private int movementCounter = 0;
 
     public void setSolidAreaDefaultX(int solidAreaDefaultX) {
         this.solidAreaDefaultX = solidAreaDefaultX;
@@ -177,6 +178,14 @@ public class Entity {
 
     public void setCollisionOn(boolean collisionOn) {
         this.collisionOn = collisionOn;
+    }
+
+    public int getMovementCounter() {
+        return movementCounter;
+    }
+
+    public void setMovementCounter(int movementCounter) {
+        this.movementCounter = movementCounter;
     }
 
     // ================================ ORIGINAL GAME PLAY========================================
