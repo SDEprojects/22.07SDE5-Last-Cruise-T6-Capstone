@@ -25,9 +25,13 @@ public class Player extends Entity {
 
     // setting initial value for player on the map
     public void setDefaultValues() {
-        setX(6 * 48);
+        setX(0);
         setY(0);
         setSpeed(4);
+        setSolidAreaX(8);
+        setSolidAreaY(16);
+        setSolidAreaDefaultX(8);
+        setSolidAreaDefaultY(16);
         setDirection("down");
     }
 
