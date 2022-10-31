@@ -13,6 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Player extends Entity {
+    private int stamina = 100;
     // CONSTRUCTOR
         // creates a small collide-able area in the player's sprite
         // sets the initial player position
@@ -78,6 +79,29 @@ public class Player extends Entity {
         }
     }
 
+    public void updateStamina() {
+        setMovementCounter(getMovementCounter() + 1);
+        if (getMovementCounter() < 30) {
+            if (stamina < 0) {
+                // throw not enough stamina exception
+                System.out.println("you ran out of stamina");
+            } else if (stamina == 0) {
+                setSpeed(0);
+            } else if (stamina <= 25) {
+                setSpeed(1);
+            } else if (stamina <= 50) {
+                setSpeed(2);
+            } else if (stamina <= 75) {
+                setSpeed(3);
+            } else if (stamina <= 100) {
+                setSpeed(4);
+            }
+        } else {
+            stamina--;
+            setMovementCounter(0);
+        }
+    }
+
     // updates the field direction by passing in whether each key is pressed or not
     public void updateDirection(boolean up, boolean down, boolean left, boolean right) {
         if (up) {
@@ -91,6 +115,7 @@ public class Player extends Entity {
         }
         // makes sure the player can move
         setCollisionOn(false);
+        // change value to keep track of stamina
     }
 
     // get the correct sprite image and draw the player on the map
@@ -131,19 +156,10 @@ public class Player extends Entity {
     }
 
     // ================================ ORIGINAL GAME PLAY========================================
-    private int stamina = 100;
 
 
     public Player(String name) {
         super(name);
-    }
-
-    public int getStamina() {
-        return stamina;
-    }
-
-    public void setStamina(int stamina) {
-        this.stamina = stamina;
     }
 
     public void reduceStaminaMove() throws NoEnoughStaminaException {
@@ -185,7 +201,13 @@ public class Player extends Entity {
         stamina = 100;
     }
 
+    public int getStamina() {
+        return stamina;
+    }
 
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
+    }
     public static class NoEnoughStaminaException extends Throwable {
 
     }
