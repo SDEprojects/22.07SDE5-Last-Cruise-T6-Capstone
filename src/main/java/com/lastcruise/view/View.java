@@ -1,6 +1,12 @@
 package com.lastcruise.view;
 
+
+import com.lastcruise.model.GamePanel;
 import com.lastcruise.model.GameText;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.Map;
 
 public class View {
@@ -47,6 +53,34 @@ public class View {
             locationItems,
             message);
     }
+
+    public void titleScreen(Graphics2D g2, int tileSize, int screenWidth){
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
+        String gameTitle = "Last cruise";
+        int x = getXforCenteredText(gameTitle, g2, screenWidth);
+        int y = tileSize*3;
+        g2.setColor(Color.blue);
+        g2.drawString(gameTitle, x, y);
+        g2.setColor(new Color(0,0,0));
+        g2.fillRect(0, 0, screenWidth, tileSize);
+        //shadow
+        g2.setColor(Color.BLUE);
+        g2.drawString(gameTitle, x+5, y+5);
+
+        //MENU
+
+        gameTitle = "NEW GAME";
+        x = getXforCenteredText(gameTitle, g2, screenWidth);
+        y += tileSize*4;
+        g2.drawString(gameTitle, x, y);
+    }
+
+     private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
+        int length = (int)g2.getFontMetrics().getStringBounds(gameTitle, g2).getWidth();
+        int x = screenWidth/2-length/2;
+        return x;
+    }
+
 
     //------------VIEW MESSAGES------------------------------------------
     public String getItemDescription(String description) {

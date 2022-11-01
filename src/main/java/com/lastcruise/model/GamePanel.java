@@ -3,6 +3,7 @@ package com.lastcruise.model;
 import com.lastcruise.controller.KeyHandler;
 import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.tile.TileManager;
+import com.lastcruise.view.View;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,10 +16,10 @@ public class GamePanel extends JPanel implements Runnable {
   private final int originalTileSize = 16;
   private final int scale = 3;
 
-  private final int tileSize = originalTileSize * scale;
+  public final int tileSize = originalTileSize * scale;
   private final int maxScreenCol = 16;
   private final int maxScreenRow = 12;
-  private final int screenWidth = tileSize * maxScreenCol;
+  public final int screenWidth = tileSize * maxScreenCol;
   private final int screenHeight = tileSize * maxScreenRow;
   // Frames per second
   private int FPS = 60;
@@ -29,6 +30,8 @@ public class GamePanel extends JPanel implements Runnable {
   private Collision collision = new Collision(tileSize, tileManager.getMapTileIndex(), tileManager.getTile());
   private Game game;
   private Inventory inventory;
+
+  private View view = new View();
 
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -86,6 +89,14 @@ public class GamePanel extends JPanel implements Runnable {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
+    //if (gameState == title){
+    //  titleScreen()}
+    if (game.getState().equals(State.TITLE)){
+      view.titleScreen(g2, tileSize, screenWidth);
+
+    }
+
+
     // draw tiles
     tileManager.draw(g2, tileSize);
     // draw items
