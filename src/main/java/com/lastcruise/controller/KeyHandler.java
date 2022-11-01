@@ -1,13 +1,22 @@
 package com.lastcruise.controller;
 
+import com.lastcruise.model.Game;
+import com.lastcruise.model.GamePanel;
+import com.lastcruise.model.State;
 import com.lastcruise.view.GameUI;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 public class KeyHandler implements KeyListener {
+
   private boolean upPressed, downPressed, leftPressed, rightPressed;
 
   private boolean inventoryState = false;
+
+  private Game game;
+
+  private GameUI gameUI;
 
   @Override
   public void keyTyped(KeyEvent e) {
@@ -17,18 +26,26 @@ public class KeyHandler implements KeyListener {
   public void keyPressed(KeyEvent e) {
     int code = e.getKeyCode();
 
-    if (code == KeyEvent.VK_W) {
-      upPressed = true;
+    if (code == KeyEvent.VK_I) {
+      if (isInventoryState()) {
+        inventoryState = false;
+        game.setState(State.PLAY);
+        System.out.println("Inventory state: " + inventoryState);
+      } else {
+        inventoryState = true;
+        game.setState(State.INVENTORY);
+        System.out.println("Inventory state: " + inventoryState);
+      }
     }
-    if (code == KeyEvent.VK_S) {
-      downPressed = true;
+
+    if (game.getState() == State.PLAY) {
+      playState(code);
     }
-    if (code == KeyEvent.VK_A) {
-      leftPressed = true;
+
+    if (game.getState() == State.INVENTORY) {
+      inventoryState(code);
     }
-    if (code == KeyEvent.VK_D) {
-      rightPressed = true;
-    }
+
   }
 
   @Override
@@ -49,22 +66,46 @@ public class KeyHandler implements KeyListener {
     }
   }
 
-  public void characterState(int code, GameUI ui) {
+  public void playState(int code) {
+    if (code == KeyEvent.VK_W) {
+      upPressed = true;
+    }
+    if (code == KeyEvent.VK_S) {
+      downPressed = true;
+    }
+    if (code == KeyEvent.VK_A) {
+      leftPressed = true;
+    }
+    if (code == KeyEvent.VK_D) {
+      rightPressed = true;
+    }
+  }
 
-    if(code == KeyEvent.VK_I) {
+  public void inventoryState(int code) {
+
+    if (code == KeyEvent.VK_I) {
       // game state = play
     }
-    if(code == KeyEvent.VK_W) {
-      ui.setSlotRow(ui.getSlotRow()-1) ;
+    if (code == KeyEvent.VK_W) {
+      if(gameUI.getSlotCol() != 0){
+        gameUI.setSlotCol(gameUI.getSlotCol() - 1);
+      }
     }
-    if(code == KeyEvent.VK_A) {
-      ui.setSlotCol(ui.getSlotCol()-1);
+    if (code == KeyEvent.VK_A) {
+      if(gameUI.getSlotRow() != 0) {
+        gameUI.setSlotRow(gameUI.getSlotRow() - 1);
+      }
     }
-    if(code == KeyEvent.VK_S) {
-      ui.setSlotRow(ui.getSlotRow()+1);
+    if (code == KeyEvent.VK_S) {
+      if(gameUI.getSlotCol() != 1) {
+        gameUI.setSlotCol(gameUI.getSlotCol() + 1);
+      }
     }
-    if(code == KeyEvent.VK_D) {
-      ui.setSlotCol(ui.getSlotCol()+1);
+    if (code == KeyEvent.VK_D) {
+      if(gameUI.getSlotRow() != 3) {
+        gameUI.setSlotRow(gameUI.getSlotRow() + 1);
+      }
+
     }
   }
 
@@ -87,4 +128,13 @@ public class KeyHandler implements KeyListener {
   public boolean isInventoryState() {
     return inventoryState;
   }
+
+  public void setGame(Game game) {
+    this.game = game;
+  }
+
+  public void setGameUI(GameUI gameUI) {
+    this.gameUI = gameUI;
+  }
+
 }
