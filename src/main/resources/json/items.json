@@ -3,33 +3,51 @@
     "name": "log",
     "description": "a long piece of wood. You need something sharp to cut it down",
     "required": ["machete"],
-    "x": 3,
-    "y": 10,
-    "image": "/objects/key.png"
+    "x": 7,
+    "y": 7,
+    "image": "/items/log.png"
   },
   {
     "name": "rope",
-    "description": "a sturdy rope hanging from a tree"
+    "description": "a sturdy rope hanging from a tree",
+    "x": 12,
+    "y": 6,
+    "image": "/items/rope.png"
   },
   {
     "name": "machete",
-    "description": "sharp metal machete that can be used to cut items"
+    "description": "sharp metal machete that can be used to cut items",
+    "x": 1,
+    "y": 1,
+    "image": "/items/axe.png"
   },
   {
     "name": "paddle",
-    "description": "an old brown paddle floating in the lake. It is still in good condition"
+    "description": "an old brown paddle floating in the lake. It is still in good condition",
+    "x": 3,
+    "y": 0,
+    "image": "/items/paddle.png"
   },
   {
     "name": "cloth",
-    "description": "old dirty cloth caught in between two rocks"
+    "description": "old dirty cloth caught in between two rocks",
+    "x": 4,
+    "y": 4,
+    "image": "/items/cloth.png"
   },
   {
     "name": "rocks",
-    "description": "a pile of slippery rocks"
+    "description": "a pile of slippery rocks",
+    "x": 6,
+    "y": 6,
+    "image": "/items/rocks.png"
   },
   {
     "name": "steelpipe",
-    "description": "a steel pipe that may have been used as mining tool"
+    "description": "a steel pipe that may have been used as mining tool",
+    "x": 0,
+    "y": 11,
+    "image": "/items/steelpipe.png"
   },
   {
     "name": "raft",
@@ -39,21 +57,33 @@
   {
     "name": "berries",
     "description": "juicy blueberries. They look edible",
-    "edible": true
+    "edible": true,
+    "x": 7,
+    "y": 7,
+    "image": "/items/berries.png"
   },
   {
     "name": "banana",
     "description": "ripe banana",
-    "edible": true
+    "edible": true,
+    "x": 3,
+    "y": 3,
+    "image": "/items/banana.png"
   },
   {
     "name": "mushroom",
     "description": "strange mushroom growing out of the cement",
-    "edible": true
+    "edible": true,
+    "x": 9,
+    "y": 10,
+    "image": "/items/mushroom.png"
   },
   {
     "name": "fish",
     "description": "an edible fish",
-    "edible": true
+    "edible": true,
+    "x": 3,
+    "y": 5,
+    "image": "/items/fish.png"
   }
 ]

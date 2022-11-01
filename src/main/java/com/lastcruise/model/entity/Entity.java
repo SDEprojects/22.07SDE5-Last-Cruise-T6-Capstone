@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
         @JsonSubTypes.Type(value = Player.class, name = "player")
     }
 )
+// class that is inherited by player and NPCs
 public class Entity {
 
     private int x, y;
@@ -28,7 +29,22 @@ public class Entity {
     private int spriteNum = 1;
     private Rectangle solidArea;
     private boolean collisionOn = false;
+    private int solidAreaDefaultX;
+    private int solidAreaDefaultY;
+    private int movementCounter = 0;
 
+    public void setSolidAreaDefaultX(int solidAreaDefaultX) {
+        this.solidAreaDefaultX = solidAreaDefaultX;
+    }
+    public void setSolidAreaDefaultY(int solidAreaDefaultY) {
+        this.solidAreaDefaultY = solidAreaDefaultY;
+    }
+    public int getSolidAreaDefaultX() {
+        return solidAreaDefaultX;
+    }
+    public int getSolidAreaDefaultY() {
+        return solidAreaDefaultY;
+    }
     public int getX() {
         return x;
     }
@@ -148,6 +164,13 @@ public class Entity {
     public void setSolidArea(Rectangle solidArea) {
         this.solidArea = solidArea;
     }
+    public void setSolidAreaX(int x) {
+        solidArea.x = x;
+    }
+    public void setSolidAreaY(int y) {
+        solidArea.y = y;
+    }
+
 
     public boolean isCollisionOn() {
         return collisionOn;
@@ -157,11 +180,20 @@ public class Entity {
         this.collisionOn = collisionOn;
     }
 
+    public int getMovementCounter() {
+        return movementCounter;
+    }
+
+    public void setMovementCounter(int movementCounter) {
+        this.movementCounter = movementCounter;
+    }
+
     // ================================ ORIGINAL GAME PLAY========================================
     private String name;
     private Inventory inventory;
 
     public Entity() {
+        this.inventory = new Inventory();
     }
 
     // Constructors
