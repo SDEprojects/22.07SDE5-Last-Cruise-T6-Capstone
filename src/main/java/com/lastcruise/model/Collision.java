@@ -66,16 +66,22 @@ public class Collision {
         entity.setSolidAreaX((entity.getX() + entity.getSolidArea().x));
         entity.setSolidAreaY((entity.getY() + entity.getSolidArea().y));
 
-        item.setSolidAreaX((item.getX() * tileSize) + item.getSolidArea().x);
-        item.setSolidAreaY((item.getY() *tileSize) + item.getSolidArea().y);
+        System.out.println("Entity: x " + entity.getSolidArea().x);
+        System.out.println("Entity: y " + entity.getSolidArea().y);
 
         item.setSolidAreaX((item.getX() * tileSize) + item.getSolidArea().x);
         item.setSolidAreaY((item.getY() *tileSize) + item.getSolidArea().y);
+
+        System.out.println(item.getName() + " x: " +  item.getSolidArea().x);
+        System.out.println(item.getName() + " y: " +  item.getSolidArea().y);
 
         switch(entity.getDirection()) {
           case "up":
             entity.setSolidAreaY(entity.getSolidArea().y - entity.getSpeed());
             if(entity.getSolidArea().intersects(item.getSolidArea())){
+              System.out.println("Collision up + " + item.getName());
+              System.out.println("Player solid area: " + entity.getSolidArea());
+              System.out.println("Item solid area: " + item.getSolidArea());
               if(item.isCollision()){
                 entity.setCollisionOn(true);
               }
@@ -87,6 +93,9 @@ public class Collision {
           case "down":
             entity.setSolidAreaY(entity.getSolidArea().y + entity.getSpeed());
             if(entity.getSolidArea().intersects(item.getSolidArea())){
+              System.out.println("Collision up + " + item.getName());
+              System.out.println("Player solid area: " + entity.getSolidArea());
+              System.out.println("Item solid area: " + item.getSolidArea());
               if(item.isCollision()){
                 entity.setCollisionOn(true);
               }
@@ -98,6 +107,9 @@ public class Collision {
           case "left":
             entity.setSolidAreaX(entity.getSolidArea().x - entity.getSpeed());
             if(entity.getSolidArea().intersects(item.getSolidArea())){
+              System.out.println("Collision up + " + item.getName());
+              System.out.println("Player solid area: " + entity.getSolidArea());
+              System.out.println("Item solid area: " + item.getSolidArea());
               if(item.isCollision()){
                 entity.setCollisionOn(true);
               }
@@ -109,6 +121,9 @@ public class Collision {
           case "right":
             entity.setSolidAreaX(entity.getSolidArea().x + entity.getSpeed());
             if(entity.getSolidArea().intersects(item.getSolidArea())){
+              System.out.println("Collision up + " + item.getName());
+              System.out.println("Player solid area: " + entity.getSolidArea());
+              System.out.println("Item solid area: " + item.getSolidArea());
               if(item.isCollision()){
                 entity.setCollisionOn(true);
               }
