@@ -119,35 +119,36 @@ public class GamePanel extends JPanel implements Runnable {
     if (game.getState().equals(State.TITLE)){
       view.titleScreen(g2, tileSize, screenWidth);
 
-    }
+    } else {
 
-
-    // draw tiles
-    tileManager.draw(g2, tileSize);
-    // draw items
-    try {
-      inventory = gameMap.getCurrentLocation().getItems();
-      if (inventory.getInventory() != null) {
-        for (Item item : inventory.getInventory().values()) {
-          item.draw(g2, tileSize);
+      // draw tiles
+      tileManager.draw(g2, tileSize);
+      // draw items
+      try {
+        inventory = gameMap.getCurrentLocation().getItems();
+        if (inventory.getInventory() != null) {
+          for (Item item : inventory.getInventory().values()) {
+            item.draw(g2, tileSize);
+          }
         }
+      } catch (NullPointerException e) {
+        e.printStackTrace();
       }
-    } catch (NullPointerException e) {
-      e.printStackTrace();
+      // draw player
+      player.draw(g2, tileSize);
+
+      // draw stamina bar
+      view.drawPlayerStamina(g2, player.getStamina());
+
+      // draw the player inventory
+      gameUI.drawInventory(this, g2, player.getInventory());
     }
-    // draw player
-    player.draw(g2, tileSize);
-
-    // draw stamina bar
-    view.drawPlayerStamina(g2, player.getStamina());
-
-    // draw the player inventory
-    gameUI.drawInventory(this, g2, player.getInventory());
 
     g2.dispose();
   }
 
   public void setupGame() {
+    game.setState(State.TITLE);
     // set inventory to the inventory of the current location
     if (game.getCurrentLocationInventory() != null) {
       this.inventory = game.getCurrentLocationInventory();
