@@ -37,11 +37,16 @@ public class KeyHandler implements KeyListener {
         System.out.println("Inventory state: " + inventoryState);
       }
     }
-
+    if (code == KeyEvent.VK_H) {
+      if (game.getState() == State.HELP) {
+        game.setState(State.PLAY);
+      } else {
+        game.setState(State.HELP);
+      }
+    }
     if (game.getState() == State.PLAY) {
       playState(code);
     }
-
     if (game.getState() == State.INVENTORY) {
       inventoryState(code);
     }

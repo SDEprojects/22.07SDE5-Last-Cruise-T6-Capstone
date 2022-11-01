@@ -70,9 +70,22 @@ public class GameUI {
   }
   public void drawHelpMenu(int x, int y, int width, int height, Graphics2D g2) {
     drawSubWindow(x, y, width, height, g2);
-
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24));
+    g2.drawString("HELP MENU", x + 12 + 48 * 4, y + 40);
+    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 18));
+    int indentX = x + 48 * 2;
+    int indentY = y + 48;
+    String[] helpMenu = new String[]{
+        "Press Z key to SLEEP",
+        "Press I key to see your INVENTORY",
+        "Press B key to BUILD something",
+        "Press E key to ESCAPE the island",
+        "Press H key to close and open the HELP menu",
+    };
+    for (int i = 0; i < helpMenu.length; i++) {
+      g2.drawString(helpMenu[i], indentX, indentY + 20 * (i + 1));
+    }
   }
-
   public void drawSubWindow(int x, int y, int width, int height, Graphics2D g2) {
 
     Color color = new Color(0, 0, 0, 210);

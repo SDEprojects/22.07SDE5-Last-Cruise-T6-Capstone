@@ -87,14 +87,6 @@ public class GamePanel extends JPanel implements Runnable {
       player.updateStamina();
       // check if player needs to change maps
       updateMap();
-    } else if (keyHandler.isHelpPressed()) {
-      game.setState(State.HELP);
-    } else if (keyHandler.isBuildPressed()) {
-      
-    } else if (keyHandler.isSleepPressed()) {
-      
-    } else if (keyHandler.isEscapePressed()) {
-
     }
     // check item collision
     String itemName = collision.checkItem(player, true, inventory);
@@ -108,24 +100,6 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   // checks if the map needs to change and places player in correct map and position
-  private void transitionMaps() {
-    int tileX = player.getX() / tileSize;
-    int tileY = player.getY() / tileSize;
-    Location current = gameMap.getCurrentLocation();
-    // checks if the tile is a transition tile and returns current map
-    String newMap = current.checkForMapTransition(tileX, tileY, player.getDirection());
-    if (!current.getName().equals(newMap)){
-      // change current location to new location
-      gameMap.setCurrentLocation(gameMap.getLocations().get(newMap));
-      // places the player at the entrance for the new map
-      int[] entrance = gameMap.getCurrentLocation().getEntranceCoordinates(player.getDirection());
-      player.setX(entrance[0] * tileSize);
-      player.setY(entrance[1] * tileSize);
-      // load the new map
-      tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
-    }
-    System.out.printf("coordinates: [%d, %d]\n", player.getX()/tileSize, player.getY()/tileSize);
-  }
 
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
@@ -155,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     if (game.getState().equals(State.HELP)) {
-      gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 3, g2);
+      gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2);
     }
 
     g2.dispose();
