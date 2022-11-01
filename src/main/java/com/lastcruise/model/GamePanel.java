@@ -46,7 +46,10 @@ public class GamePanel extends JPanel implements Runnable {
     this.addKeyListener(keyHandler);
     this.setFocusable(true);
     this.inventory = new Inventory();
-    this.game = new Game("Player");
+    this.game = new Game("Pla"
+        + "yer");
+    keyHandler.setGame(game);
+    keyHandler.setGameUI(gameUI);
   }
 
   public void startGameThread() {
@@ -89,6 +92,12 @@ public class GamePanel extends JPanel implements Runnable {
     // check item collision
     String itemName = collision.checkItem(player, true, inventory);
     pickupItem(itemName);
+
+//    if(keyHandler.isInventoryState()) {
+//      game.setState(State.INVENTORY);
+//    } else {
+//      game.setState(State.PLAY);
+//    }
   }
 
   // checks if the map needs to change and places player in correct map and position
@@ -134,7 +143,9 @@ public class GamePanel extends JPanel implements Runnable {
     view.drawPlayerStamina(g2, player.getStamina());
 
     // draw the player inventory
-    gameUI.drawInventory(this, g2, player.getInventory());
+    if(game.getState() == State.INVENTORY) {
+      gameUI.drawInventory(this, g2, player.getInventory());
+    }
 
     g2.dispose();
   }
