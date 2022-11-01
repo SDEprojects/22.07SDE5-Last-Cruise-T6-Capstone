@@ -35,7 +35,6 @@ public class GamePanel extends JPanel implements Runnable {
   private Inventory inventory;
   private GameMap gameMap;
   private View view = new View();
-
   private GameUI gameUI = new GameUI();
 
   // CONSTRUCTOR
@@ -85,6 +84,14 @@ public class GamePanel extends JPanel implements Runnable {
       player.updateStamina();
       // check if player needs to change maps
       updateMap();
+    } else if (keyHandler.isHelpPressed()) {
+      game.setState(State.HELP);
+    } else if (keyHandler.isBuildPressed()) {
+      
+    } else if (keyHandler.isSleepPressed()) {
+      
+    } else if (keyHandler.isEscapePressed()) {
+
     }
     // check item collision
     String itemName = collision.checkItem(player, true, inventory);
@@ -131,10 +138,14 @@ public class GamePanel extends JPanel implements Runnable {
     player.draw(g2, tileSize);
 
     // draw stamina bar
-    view.drawPlayerStamina(g2, player.getStamina());
+    gameUI.drawPlayerStamina(g2, player.getStamina());
 
     // draw the player inventory
     gameUI.drawInventory(this, g2, player.getInventory());
+
+    if (game.getState().equals(State.HELP)) {
+      gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 3, g2);
+    }
 
     g2.dispose();
   }

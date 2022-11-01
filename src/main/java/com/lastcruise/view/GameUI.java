@@ -5,6 +5,7 @@ import com.lastcruise.model.Inventory;
 import com.lastcruise.model.Item;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -13,6 +14,17 @@ public class GameUI {
   private int slotCol = 0;
   private int slotRow = 0;
 
+  public void drawPlayerStamina(Graphics2D g2, int playerStamina) {
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24));
+    g2.drawString("Stamina", 24, 24);
+
+    int rectWidth = 48 * 3;
+    g2.setColor(Color.black);
+    g2.fillRect(24, 28, rectWidth, 24);
+    g2.setColor(Color.red);
+    int staminaWidth = playerStamina * rectWidth / 100;
+    g2.fillRect(24, 28, staminaWidth ,24);
+  }
   public void drawInventory(GamePanel gp, Graphics2D g2, Inventory playerInventory) {
 
     // frame
@@ -54,6 +66,10 @@ public class GameUI {
     g2.setStroke(new BasicStroke(3));
     // draw cursor
     g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 25, 25);
+
+  }
+  public void drawHelpMenu(int x, int y, int width, int height, Graphics2D g2) {
+    drawSubWindow(x, y, width, height, g2);
 
   }
 
