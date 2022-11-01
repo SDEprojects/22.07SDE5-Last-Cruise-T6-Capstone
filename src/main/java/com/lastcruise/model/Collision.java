@@ -1,9 +1,11 @@
 package com.lastcruise.model;
 
 import com.lastcruise.model.entity.Entity;
+import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.tile.Tile;
 
 public class Collision {
+
   private Tile[] tile;
   private int tileSize;
   private int[][] mapTileIndex;
@@ -14,6 +16,7 @@ public class Collision {
     this.tile = tile;
   }
 
+  // checks if players next tile will collide with a collision tile
   public boolean checkTile(int topRow, int bottomRow, int leftCol, int rightCol, String direction) {
 
     int tileNum1, tileNum2;
@@ -50,4 +53,93 @@ public class Collision {
     }
     return false;
   }
+
+
+  public String checkItem(Entity entity, boolean player, Inventory inventory) {
+
+    String itemName = "";
+
+    // get the list of object in the current map
+    if (inventory != null) {
+      for (Item item : inventory.getInventory().values()) {
+
+        entity.setSolidAreaX((entity.getX() + entity.getSolidArea().x));
+        entity.setSolidAreaY((entity.getY() + entity.getSolidArea().y));
+
+        System.out.println("Entity: x " + entity.getSolidArea().x);
+        System.out.println("Entity: y " + entity.getSolidArea().y);
+
+        item.setSolidAreaX((item.getX() * tileSize) + item.getSolidArea().x);
+        item.setSolidAreaY((item.getY() *tileSize) + item.getSolidArea().y);
+
+        System.out.println(item.getName() + " x: " +  item.getSolidArea().x);
+        System.out.println(item.getName() + " y: " +  item.getSolidArea().y);
+
+        switch(entity.getDirection()) {
+          case "up":
+            entity.setSolidAreaY(entity.getSolidArea().y - entity.getSpeed());
+            if(entity.getSolidArea().intersects(item.getSolidArea())){
+              System.out.println("Collision up + " + item.getName());
+              System.out.println("Player solid area: " + entity.getSolidArea());
+              System.out.println("Item solid area: " + item.getSolidArea());
+              if(item.isCollision()){
+                entity.setCollisionOn(true);
+              }
+              if (player) {
+                itemName = item.getName();
+              }
+            }
+            break;
+          case "down":
+            entity.setSolidAreaY(entity.getSolidArea().y + entity.getSpeed());
+            if(entity.getSolidArea().intersects(item.getSolidArea())){
+              System.out.println("Collision up + " + item.getName());
+              System.out.println("Player solid area: " + entity.getSolidArea());
+              System.out.println("Item solid area: " + item.getSolidArea());
+              if(item.isCollision()){
+                entity.setCollisionOn(true);
+              }
+              if (player) {
+                itemName = item.getName();
+              }
+            }
+            break;
+          case "left":
+            entity.setSolidAreaX(entity.getSolidArea().x - entity.getSpeed());
+            if(entity.getSolidArea().intersects(item.getSolidArea())){
+              System.out.println("Collision up + " + item.getName());
+              System.out.println("Player solid area: " + entity.getSolidArea());
+              System.out.println("Item solid area: " + item.getSolidArea());
+              if(item.isCollision()){
+                entity.setCollisionOn(true);
+              }
+              if (player) {
+                itemName = item.getName();
+              }
+            }
+            break;
+          case "right":
+            entity.setSolidAreaX(entity.getSolidArea().x + entity.getSpeed());
+            if(entity.getSolidArea().intersects(item.getSolidArea())){
+              System.out.println("Collision up + " + item.getName());
+              System.out.println("Player solid area: " + entity.getSolidArea());
+              System.out.println("Item solid area: " + item.getSolidArea());
+              if(item.isCollision()){
+                entity.setCollisionOn(true);
+              }
+              if (player) {
+                itemName = item.getName();
+              }
+            }
+            break;
+        }
+        entity.setSolidAreaX(entity.getSolidAreaDefaultX());
+        entity.setSolidAreaY(entity.getSolidAreaDefaultY());
+        item.setSolidAreaX(item.getSolidAreaDefaultX());
+        item.setSolidAreaY(item.getSolidAreaDefaultY());
+      }
+    }
+    return itemName;
+  }
+
 }

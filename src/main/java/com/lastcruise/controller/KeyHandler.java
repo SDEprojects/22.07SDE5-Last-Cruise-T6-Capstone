@@ -1,10 +1,13 @@
 package com.lastcruise.controller;
 
+import com.lastcruise.view.GameUI;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
   private boolean upPressed, downPressed, leftPressed, rightPressed;
+
+  private boolean inventoryState = false;
 
   @Override
   public void keyTyped(KeyEvent e) {
@@ -26,8 +29,6 @@ public class KeyHandler implements KeyListener {
     if (code == KeyEvent.VK_D) {
       rightPressed = true;
     }
-
-
   }
 
   @Override
@@ -48,6 +49,25 @@ public class KeyHandler implements KeyListener {
     }
   }
 
+  public void characterState(int code, GameUI ui) {
+
+    if(code == KeyEvent.VK_I) {
+      // game state = play
+    }
+    if(code == KeyEvent.VK_W) {
+      ui.setSlotRow(ui.getSlotRow()-1) ;
+    }
+    if(code == KeyEvent.VK_A) {
+      ui.setSlotCol(ui.getSlotCol()-1);
+    }
+    if(code == KeyEvent.VK_S) {
+      ui.setSlotRow(ui.getSlotRow()+1);
+    }
+    if(code == KeyEvent.VK_D) {
+      ui.setSlotCol(ui.getSlotCol()+1);
+    }
+  }
+
   public boolean isUpPressed() {
     return upPressed;
   }
@@ -62,5 +82,9 @@ public class KeyHandler implements KeyListener {
 
   public boolean isRightPressed() {
     return rightPressed;
+  }
+
+  public boolean isInventoryState() {
+    return inventoryState;
   }
 }

@@ -53,7 +53,7 @@ public class Game {
     }
 
     @JsonIgnore
-    public Map getCurrentLocation() {
+    public Location getCurrentLocation() {
         return gameMap.getCurrentLocation();
     }
 

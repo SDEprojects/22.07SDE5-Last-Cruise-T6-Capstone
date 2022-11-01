@@ -1,6 +1,7 @@
 package com.lastcruise.model;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Set;
@@ -12,10 +13,41 @@ public class Item {
     private boolean edible;
     private Set<String> required;
     private BufferedImage image;
-    private boolean collision = false;
+    private boolean collision = true;
     private int x;
     private int y;
+    private Rectangle solidArea = new Rectangle(8, 16, 32, 32);
+    private final int solidAreaDefaultX = 8;
+    private final int solidAreaDefaultY = 16;
 
+
+    public int getSolidAreaDefaultX() {
+        return solidAreaDefaultX;
+    }
+
+    public int getSolidAreaDefaultY() {
+        return solidAreaDefaultY;
+    }
+    public Rectangle getSolidArea() {
+        return solidArea;
+    }
+
+    public void setSolidArea(Rectangle solidArea) {
+        this.solidArea = solidArea;
+    }
+    public void setSolidAreaX(int x){
+        this.solidArea.x = x;
+    }
+    public void setSolidAreaY(int y){
+        this.solidArea.y = y;
+    }
+    public boolean isCollision() {
+        return collision;
+    }
+
+    public void setCollision(boolean collision) {
+        this.collision = collision;
+    }
     public int getX() {
         return x;
     }
@@ -31,7 +63,6 @@ public class Item {
     public void setY(int y) {
         this.y = y;
     }
-
 
     public BufferedImage getImage() {
         return image;

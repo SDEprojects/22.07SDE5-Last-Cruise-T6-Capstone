@@ -5,11 +5,28 @@ import com.lastcruise.model.GamePanel;
 import com.lastcruise.model.GameText;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Map;
 
 public class View {
+
+    public void drawPlayerStamina(Graphics2D g2, int playerStamina) {
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24));
+        g2.drawString("Stamina", 24, 24);
+
+        int rectWidth = 48 * 3;
+        g2.setColor(Color.black);
+        g2.fillRect(24, 28, rectWidth, 24);
+        g2.setColor(Color.red);
+        int staminaWidth = playerStamina * rectWidth / 100;
+        g2.fillRect(24, 28, staminaWidth ,24);
+    }
+
+
+
+
+
+    // ================================ ORIGINAL GAME PLAY========================================
 
     private final Map<String, String> GAME_TEXT;
 

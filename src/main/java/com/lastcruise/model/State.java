@@ -4,6 +4,8 @@ public enum State {
   TITLE,
   WIN,
   LOSE,
-  PLAY
+  PLAY,
+  HELP,
+  INVENTORY
 
 }
