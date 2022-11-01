@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
     private int stamina = 100;
+    private int sleepTimer = 0;
     // CONSTRUCTOR
         // creates a small collide-able area in the player's sprite
         // sets the initial player position
@@ -199,7 +200,11 @@ public class Player extends Entity {
     }
 
     public void sleep(){
-        stamina = 100;
+        sleepTimer++;
+        if (stamina < 100 && sleepTimer > 40) {
+            stamina++;
+            sleepTimer = 0;
+        }
     }
 
     public int getStamina() {

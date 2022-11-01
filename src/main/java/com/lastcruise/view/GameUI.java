@@ -86,6 +86,14 @@ public class GameUI {
       g2.drawString(helpMenu[i], indentX, indentY + 20 * (i + 1));
     }
   }
+  public void drawStringInSubWindow(int x, int y, int width, int height, Graphics2D g2, String[] lines) {
+    drawSubWindow(x, y, width, height, g2);
+    int indentX = x + 48 * 2;
+    int indentY = y + 48;
+    for (int i = 0; i < lines.length; i++) {
+      g2.drawString(lines[i], indentX, indentY + 20 * (i + 1));
+    }
+  }
   public void drawSubWindow(int x, int y, int width, int height, Graphics2D g2) {
 
     Color color = new Color(0, 0, 0, 210);

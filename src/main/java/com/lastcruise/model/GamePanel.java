@@ -76,6 +76,9 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void update() {
+    if (game.getState() == State.SLEEP) {
+      player.sleep();
+    }
     if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()){
       // update the player's direction when someone presses W, A, S, or D
       player.updateDirection(keyHandler.isUpPressed(), keyHandler.isDownPressed(), keyHandler.isLeftPressed(), keyHandler.isRightPressed());
@@ -131,7 +134,13 @@ public class GamePanel extends JPanel implements Runnable {
     if (game.getState().equals(State.HELP)) {
       gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2);
     }
-
+    if (game.getState().equals(State.SLEEP)) {
+      if (player.getStamina() < 100){
+        gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"Sleepy time...zzzZZZzzZZzz "});
+      } else {
+        gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"You have full stamina. WAKE UP!"});
+      }
+    }
     g2.dispose();
   }
 
