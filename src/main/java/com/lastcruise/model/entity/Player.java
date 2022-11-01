@@ -83,6 +83,7 @@ public class Player extends Entity {
         setMovementCounter(getMovementCounter() + 1);
         if (getMovementCounter() < 30) {
             if (stamina < 0) {
+                setSpeed(0);
                 // throw not enough stamina exception
                 System.out.println("you ran out of stamina");
             } else if (stamina == 0) {
