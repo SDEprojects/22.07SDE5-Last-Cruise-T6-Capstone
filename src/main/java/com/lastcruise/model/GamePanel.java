@@ -141,6 +141,9 @@ public class GamePanel extends JPanel implements Runnable {
         gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"You have full stamina. WAKE UP!"});
       }
     }
+    if (player.getStamina() == 0) {
+      gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"Uh oh...", "You have no more stamina!", "Are you tired?", "Do you need some rest?", "Are you hungry?"});
+    }
     g2.dispose();
   }
 
