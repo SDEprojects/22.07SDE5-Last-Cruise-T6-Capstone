@@ -30,29 +30,22 @@ public class SoundEffect {
             e.printStackTrace();
         }
     }
-    public void changeMapFx() {
-        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("run"));
-        runAudio(sound);
-    }
-    public void pickUpFx() {
-        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("pickup"));
-        runAudio(sound);
-    }
-    public void sleepFx() {
-        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("sleep"));
-        loopCounter++;
-        if (loopCounter > 150) {
-            runAudio(sound);
-            loopCounter = 0;
-        }
-    }
-    public void walkFx() {
-        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("footsteps"));
-        loopCounter++;
-        if (loopCounter > 90) {
-//            runAudio(sound);
-            loopCounter = 0;
-        } else if (loopCounter == 1) {
+    public void loadAndPlayFx(String label){
+        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get(label));
+        if (label.equals("sleep")){
+            loopCounter++;
+            if (loopCounter > 150) {
+                runAudio(sound);
+                loopCounter = 0;
+            }
+        } else if (label.equals("footsteps")) {
+            loopCounter++;
+            if (loopCounter > 90) {
+                loopCounter = 0;
+            } else if (loopCounter == 1) {
+                runAudio(sound);
+            }
+        } else {
             runAudio(sound);
         }
     }

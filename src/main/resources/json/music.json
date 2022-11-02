@@ -7,5 +7,6 @@
   "eat": "/audio/eat.wav",
   "run": "/audio/run.wav",
   "sleep": "/audio/snore.wav",
-  "footsteps": "/audio/footsteps.wav"
+  "footsteps": "/audio/footsteps.wav",
+  "build": "/audio/hammer.wav"
 }

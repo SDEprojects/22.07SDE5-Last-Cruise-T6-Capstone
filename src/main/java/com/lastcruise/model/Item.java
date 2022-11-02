@@ -1,9 +1,12 @@
 package com.lastcruise.model;
 
+import com.lastcruise.model.Inventory.InventoryEmptyException;
+import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ConcurrentModificationException;
 import java.util.Set;
 import javax.imageio.ImageIO;
 
@@ -130,6 +133,21 @@ public class Item {
         g2.drawImage(getImage(), getX()*tileSize, getY()*tileSize, tileSize, tileSize, null);
     }
 
+    public String checkEatOrDrop() {
+        if (name.equals("banana")
+            || name.equals("berries")
+            || name.equals("fish")
+            || name.equals("mushroom")) {
+            return "eat";
+        } else {
+            return "drop";
+        }
+    }
+
+    public void updateItemLocation(int playerX, int playerY) {
+        x = (playerX + 64) / 48;
+        y = (playerY + 64) / 48;
+    }
 
 
 

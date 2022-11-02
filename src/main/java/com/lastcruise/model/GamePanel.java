@@ -4,6 +4,7 @@ import com.lastcruise.controller.KeyHandler;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.entity.Entity;
 import com.lastcruise.model.entity.Player;
+import com.lastcruise.model.entity.Player.ItemNotEdibleException;
 import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import com.lastcruise.model.tile.TileManager;
 import com.lastcruise.view.View;
@@ -13,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.net.URL;
+import java.util.ConcurrentModificationException;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -86,10 +88,22 @@ public class GamePanel extends JPanel implements Runnable {
   public void update() {
     if (game.getState() == State.SLEEP) {
       player.sleep();
-      soundEffect.sleepFx();
+      soundEffect.loadAndPlayFx("sleep");
+    }
+    if (game.getState() == State.INVENTORY){
+      if (keyHandler.isEnterPressed()){
+        dropItem();
+      }
+
+//      soundEffect.dropFx();
+    }
+    if (keyHandler.isBuildPressed()) {
+      game.craftRaft();
+      soundEffect.loadAndPlayFx("build");
+      keyHandler.setBuildPressed(false);
     }
     if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()){
-      soundEffect.walkFx();
+      soundEffect.loadAndPlayFx("footsteps");
       // update the player's direction when someone presses W, A, S, or D
       player.updateDirection(keyHandler.isUpPressed(), keyHandler.isDownPressed(),
           keyHandler.isLeftPressed(), keyHandler.isRightPressed());
@@ -150,7 +164,7 @@ public class GamePanel extends JPanel implements Runnable {
       }
 
       if (game.getState().equals(State.HELP)) {
-        gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2);
+        gameUI.drawHelpMenu(tileSize * 2, tileSize * 7, tileSize * 12, tileSize * 5, g2);
       }
       if (game.getState().equals(State.SLEEP)) {
         if (player.getStamina() < 100) {
@@ -223,19 +237,17 @@ public class GamePanel extends JPanel implements Runnable {
       player.setY(entrance[1] * tileSize);
       // load the new map
       tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
-      soundEffect.changeMapFx();
+      soundEffect.loadAndPlayFx("run");
     }
   }
 
     public void pickupItem (String itemName){
       if (!itemName.equals("")) {
         try {
-
-          player.setStamina(player.getStamina() - 10);
-
+          player.reduceStaminaPickUp();
           // remove the item from the location inventory and add it to the player inventory
           game.transferItemFromTo(inventory, player.getInventory(), itemName);
-          soundEffect.pickUpFx();
+          soundEffect.loadAndPlayFx("pickup");
         } catch (InventoryEmptyException e) {
           System.out.println("Item " + itemName + " is not in inventory!");
         } catch (NoEnoughStaminaException e) {
@@ -243,6 +255,40 @@ public class GamePanel extends JPanel implements Runnable {
           System.out.println("Not enough stamina to pickup item!");
         }
       }
+    }
+    public void dropItem() {
+      int index = gameUI.getItemIndex();
+      Item foundItem = null;
+      for (Item item : game.getPlayerInventory().getInventory().values()) {
+        if (item.getIndex() == index) {
+          foundItem = item;
+          System.out.println("Index: " + index + " Name: " + item.getName());
+        }
+      }
+      if (foundItem != null) {
+        String action = foundItem.checkEatOrDrop();
+        if (action.equals("eat")) {
+          try {
+            game.eatItem(foundItem.getName());
+            soundEffect.loadAndPlayFx("eat");
+          } catch (InventoryEmptyException | ItemNotEdibleException |
+                   ConcurrentModificationException e) {
+            //System.out.println(e);
+          }
+        } else if (action.equals("drop")) {
+          try {
+            foundItem.updateItemLocation(player.getX(), player.getY());
+            game.transferItemFromTo(game.getPlayerInventory(), game.getCurrentLocationInventory(),
+                foundItem.getName());
+            soundEffect.loadAndPlayFx("drop");
+          } catch (InventoryEmptyException |
+                   ConcurrentModificationException |
+                   NoEnoughStaminaException e) {
+            //System.out.println(e);
+          }
+        }
+      }
+      keyHandler.setEnterPressed(false);
     }
 
   public void playBackgroundMusic() {

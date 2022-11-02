@@ -198,7 +198,6 @@ public class Player extends Entity {
             throw new ItemNotEdibleException();
         }
     }
-
     public void sleep(){
         sleepTimer++;
         if (stamina < 100 && sleepTimer > 5) {
