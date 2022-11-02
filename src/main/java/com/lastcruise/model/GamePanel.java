@@ -110,7 +110,7 @@ public class GamePanel extends JPanel implements Runnable {
     Graphics2D g2 = (Graphics2D) g;
     //if (gameState == title){
     //  titleScreen()}
-    if (game.getState().equals(State.TITLE)){
+    if (game.getState().equals(State.TITLE)) {
       view.titleScreen(g2, tileSize, screenWidth);
 
     } else {
@@ -131,28 +131,33 @@ public class GamePanel extends JPanel implements Runnable {
       // draw player
       player.draw(g2, tileSize);
 
-    // draw stamina bar
-    gameUI.drawPlayerStamina(g2, player.getStamina());
+      // draw stamina bar
+      gameUI.drawPlayerStamina(g2, player.getStamina());
 
-    // draw the player inventory
-    if(game.getState() == State.INVENTORY) {
-      gameUI.drawInventory(this, g2, player.getInventory());
-    }
-
-    if (game.getState().equals(State.HELP)) {
-      gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2);
-    }
-    if (game.getState().equals(State.SLEEP)) {
-      if (player.getStamina() < 100){
-        gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"Sleepy time...zzzZZZzzZZzz "});
-      } else {
-        gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"You have full stamina. WAKE UP!"});
+      // draw the player inventory
+      if (game.getState() == State.INVENTORY) {
+        gameUI.drawInventory(this, g2, player.getInventory());
       }
+
+      if (game.getState().equals(State.HELP)) {
+        gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2);
+      }
+      if (game.getState().equals(State.SLEEP)) {
+        if (player.getStamina() < 100) {
+          gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2,
+              new String[]{"Sleepy time...zzzZZZzzZZzz "});
+        } else {
+          gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2,
+              new String[]{"You have full stamina. WAKE UP!"});
+        }
+      }
+      if (player.getStamina() == 0) {
+        gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2,
+            new String[]{"Uh oh...", "You have no more stamina!", "Are you tired?",
+                "Do you need some rest?", "Are you hungry?"});
+      }
+      g2.dispose();
     }
-    if (player.getStamina() == 0) {
-      gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"Uh oh...", "You have no more stamina!", "Are you tired?", "Do you need some rest?", "Are you hungry?"});
-    }
-    g2.dispose();
   }
 
   public void setupGame() {
