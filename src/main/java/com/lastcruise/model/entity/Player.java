@@ -173,9 +173,10 @@ public class Player extends Entity {
     }
 
     public void reduceStaminaPickUp() throws NoEnoughStaminaException {
-        int energy = 25;
+        int energy = 10;
         if (hasEnoughStamina(energy)) {
             stamina -= energy;
+            System.out.println("Staminia: " + stamina);
         } else {
             throw new NoEnoughStaminaException();
         }
@@ -200,7 +201,7 @@ public class Player extends Entity {
 
     public void sleep(){
         sleepTimer++;
-        if (stamina < 100 && sleepTimer > 40) {
+        if (stamina < 100 && sleepTimer > 5) {
             stamina++;
             sleepTimer = 0;
         }
