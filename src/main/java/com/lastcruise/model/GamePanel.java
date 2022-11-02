@@ -235,7 +235,7 @@ public class GamePanel extends JPanel implements Runnable {
 
           // remove the item from the location inventory and add it to the player inventory
           game.transferItemFromTo(inventory, player.getInventory(), itemName);
-
+          soundEffect.pickUpFx();
         } catch (InventoryEmptyException e) {
           System.out.println("Item " + itemName + " is not in inventory!");
         } catch (NoEnoughStaminaException e) {

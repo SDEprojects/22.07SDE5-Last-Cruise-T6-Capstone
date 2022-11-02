@@ -49,9 +49,11 @@ public class SoundEffect {
     public void walkFx() {
         URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("footsteps"));
         loopCounter++;
-        if (loopCounter > 24) {
-            runAudio(sound);
+        if (loopCounter > 90) {
+//            runAudio(sound);
             loopCounter = 0;
+        } else if (loopCounter == 1) {
+            runAudio(sound);
         }
     }
     public static void decreaseFxVolume(){
