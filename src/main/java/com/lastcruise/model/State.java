@@ -6,6 +6,7 @@ public enum State {
   LOSE,
   HELP,
   INVENTORY,
+  SLEEP,
   PLAY {
     @Override
     public boolean isTerminal() {
