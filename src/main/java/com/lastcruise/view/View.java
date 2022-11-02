@@ -1,12 +1,12 @@
 package com.lastcruise.view;
-
-
-import com.lastcruise.model.GamePanel;
 import com.lastcruise.model.GameText;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Map;
+import javax.imageio.ImageIO;
 
 public class View {
 
@@ -71,25 +71,49 @@ public class View {
             message);
     }
 
-    public void titleScreen(Graphics2D g2, int tileSize, int screenWidth){
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
-        String gameTitle = "Last cruise";
+    public void titleScreen(Graphics2D g2, int tileSize, int screenWidth)  {
+        BufferedImage titleImage = null;
+        try {
+            titleImage = ImageIO.read(getClass().getResourceAsStream("/title/ship.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 90F));
+        String gameTitle = "LAST CRUISE";
         int x = getXforCenteredText(gameTitle, g2, screenWidth);
         int y = tileSize*3;
-        g2.setColor(Color.blue);
+        g2.setColor(Color.white);
         g2.drawString(gameTitle, x, y);
-        g2.setColor(new Color(0,0,0));
+        g2.setColor(new Color(0, 0, 0));
         g2.fillRect(0, 0, screenWidth, tileSize);
         //shadow
-        g2.setColor(Color.BLUE);
+        g2.setColor(Color.white);
         g2.drawString(gameTitle, x+5, y+5);
 
-        //MENU
+        //Image
+       x = screenWidth/2 -(tileSize*2)/2;
+       y += tileSize*2;
+        g2.drawImage(titleImage, tileSize*5, tileSize*3, tileSize*6,tileSize*6, null);
 
+        //Menu
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
         gameTitle = "NEW GAME";
         x = getXforCenteredText(gameTitle, g2, screenWidth);
         y += tileSize*4;
         g2.drawString(gameTitle, x, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
+        gameTitle = "LOAD GAME";
+        x = getXforCenteredText(gameTitle, g2, screenWidth);
+        y += tileSize;
+        g2.drawString(gameTitle, x, y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
+        gameTitle = "EXIT GAME";
+        x = getXforCenteredText(gameTitle, g2, screenWidth);
+        y += tileSize;
+        g2.drawString(gameTitle, x, y);
+
     }
 
      private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
