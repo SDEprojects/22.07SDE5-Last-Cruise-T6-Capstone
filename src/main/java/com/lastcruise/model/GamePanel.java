@@ -35,7 +35,6 @@ public class GamePanel extends JPanel implements Runnable {
   private Inventory inventory;
   private GameMap gameMap;
   private View view = new View();
-
   private GameUI gameUI = new GameUI();
 
   // CONSTRUCTOR
@@ -77,6 +76,9 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void update() {
+    if (game.getState() == State.SLEEP) {
+      player.sleep();
+    }
     if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()){
       // update the player's direction when someone presses W, A, S, or D
       player.updateDirection(keyHandler.isUpPressed(), keyHandler.isDownPressed(), keyHandler.isLeftPressed(), keyHandler.isRightPressed());
@@ -101,24 +103,6 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   // checks if the map needs to change and places player in correct map and position
-  private void transitionMaps() {
-    int tileX = player.getX() / tileSize;
-    int tileY = player.getY() / tileSize;
-    Location current = gameMap.getCurrentLocation();
-    // checks if the tile is a transition tile and returns current map
-    String newMap = current.checkForMapTransition(tileX, tileY, player.getDirection());
-    if (!current.getName().equals(newMap)){
-      // change current location to new location
-      gameMap.setCurrentLocation(gameMap.getLocations().get(newMap));
-      // places the player at the entrance for the new map
-      int[] entrance = gameMap.getCurrentLocation().getEntranceCoordinates(player.getDirection());
-      player.setX(entrance[0] * tileSize);
-      player.setY(entrance[1] * tileSize);
-      // load the new map
-      tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
-    }
-    System.out.printf("coordinates: [%d, %d]\n", player.getX()/tileSize, player.getY()/tileSize);
-  }
 
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
@@ -140,13 +124,23 @@ public class GamePanel extends JPanel implements Runnable {
     player.draw(g2, tileSize);
 
     // draw stamina bar
-    view.drawPlayerStamina(g2, player.getStamina());
+    gameUI.drawPlayerStamina(g2, player.getStamina());
 
     // draw the player inventory
     if(game.getState() == State.INVENTORY) {
       gameUI.drawInventory(this, g2, player.getInventory());
     }
 
+    if (game.getState().equals(State.HELP)) {
+      gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2);
+    }
+    if (game.getState().equals(State.SLEEP)) {
+      if (player.getStamina() < 100){
+        gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"Sleepy time...zzzZZZzzZZzz "});
+      } else {
+        gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2, new String[]{"You have full stamina. WAKE UP!"});
+      }
+    }
     g2.dispose();
   }
 
