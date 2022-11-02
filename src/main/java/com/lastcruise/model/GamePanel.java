@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
   private Inventory inventory;
   private GameMap gameMap;
   private View view = new View();
+
   private GameUI gameUI = new GameUI();
 
   // CONSTRUCTOR
@@ -107,21 +108,28 @@ public class GamePanel extends JPanel implements Runnable {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
-    // draw tiles
-    tileManager.draw(g2, tileSize);
-    // draw items
-    try {
-      inventory = gameMap.getCurrentLocation().getItems();
-      if (inventory.getInventory() != null) {
-        for (Item item : inventory.getInventory().values()) {
-          item.draw(g2, tileSize);
+    //if (gameState == title){
+    //  titleScreen()}
+    if (game.getState().equals(State.TITLE)){
+      view.titleScreen(g2, tileSize, screenWidth);
+
+    } else {
+
+      // draw tiles
+      tileManager.draw(g2, tileSize);
+      // draw items
+      try {
+        inventory = gameMap.getCurrentLocation().getItems();
+        if (inventory.getInventory() != null) {
+          for (Item item : inventory.getInventory().values()) {
+            item.draw(g2, tileSize);
+          }
         }
+      } catch (NullPointerException e) {
+        e.printStackTrace();
       }
-    } catch (NullPointerException e) {
-      e.printStackTrace();
-    }
-    // draw player
-    player.draw(g2, tileSize);
+      // draw player
+      player.draw(g2, tileSize);
 
     // draw stamina bar
     gameUI.drawPlayerStamina(g2, player.getStamina());
@@ -148,6 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setupGame() {
+    game.setState(State.TITLE);
     // set inventory to the inventory of the current location
     if (game.getCurrentLocationInventory() != null) {
       this.inventory = game.getCurrentLocationInventory();
