@@ -44,6 +44,13 @@ public class KeyHandler implements KeyListener {
         game.setState(State.HELP);
       }
     }
+    if (code == KeyEvent.VK_Z) {
+      if (game.getState() == State.SLEEP) {
+        game.setState(State.PLAY);
+      } else {
+        game.setState(State.SLEEP);
+      }
+    }
     if (game.getState() == State.PLAY) {
       playState(code);
     }
