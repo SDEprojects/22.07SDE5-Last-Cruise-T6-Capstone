@@ -20,7 +20,16 @@ public class Item {
     private final int solidAreaDefaultX = 8;
     private final int solidAreaDefaultY = 16;
 
+    private int index;
 
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
     public int getSolidAreaDefaultX() {
         return solidAreaDefaultX;
     }

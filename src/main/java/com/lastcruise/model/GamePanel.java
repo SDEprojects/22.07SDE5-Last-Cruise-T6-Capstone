@@ -2,6 +2,7 @@ package com.lastcruise.model;
 
 import com.lastcruise.controller.KeyHandler;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
+import com.lastcruise.model.entity.Entity;
 import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import com.lastcruise.model.tile.TileManager;
@@ -28,10 +29,12 @@ public class GamePanel extends JPanel implements Runnable {
   private int FPS = 60;
   private KeyHandler keyHandler = new KeyHandler();
   private Thread gameThread;
-  private Player player = new Player();
-  private TileManager tileManager = new TileManager(maxScreenCol, maxScreenRow);
-  private Collision collision = new Collision(tileSize, tileManager.getMapTileIndex(),
-      tileManager.getTile());
+
+  private Player player;
+
+  private TileManager tileManager = new TileManager( maxScreenCol, maxScreenRow);
+  private Collision collision = new Collision(tileSize, tileManager.getMapTileIndex(), tileManager.getTile());
+
   private Game game;
   private Inventory inventory;
   private GameMap gameMap;
@@ -41,16 +44,17 @@ public class GamePanel extends JPanel implements Runnable {
 
   // CONSTRUCTOR
   public GamePanel() {
+    this.player = new Player();
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
     this.setBackground(Color.black);
     this.setDoubleBuffered(true);
     this.addKeyListener(keyHandler);
     this.setFocusable(true);
     this.inventory = new Inventory();
-    this.game = new Game("Pla"
-        + "yer");
+    this.game = new Game(player);
     keyHandler.setGame(game);
     keyHandler.setGameUI(gameUI);
+    game.setPlayer(this.player);
   }
 
   public void startGameThread() {
@@ -191,6 +195,7 @@ public class GamePanel extends JPanel implements Runnable {
             collision.checkTile(topRow, bottomRow, leftCol, rightCol, player.getDirection()));
       } catch (ArrayIndexOutOfBoundsException e) {
         player.setCollisionOn(true);
+
       }
     }
 
@@ -231,10 +236,15 @@ public class GamePanel extends JPanel implements Runnable {
       }
     }
 
-    public int getTileSize () {
-      return tileSize;
-    }
 
+  public int getTileSize() {
+    return tileSize;
   }
+
+  public Player getPlayer(){
+    return this.player;
+  }
+
+}
 
 

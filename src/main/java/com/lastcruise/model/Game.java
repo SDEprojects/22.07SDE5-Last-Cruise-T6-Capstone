@@ -3,6 +3,7 @@ package com.lastcruise.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lastcruise.model.GameMap.InvalidLocationException;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
+import com.lastcruise.model.entity.Entity;
 import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.entity.Player.ItemNotEdibleException;
 import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
@@ -22,9 +23,14 @@ public class Game {
 
     }
 
-    public Game(String playerName) {
+    public Game(Player player) {
         this.gameMap = new GameMap();
-        this.player = new Player(playerName);
+        this.state = State.PLAY;
+        gameMap.setStartLocation(gameMap.getLocations().get(STARTING_LOCATION));
+    }
+
+    public Game(String name){
+        this.gameMap = new GameMap();
         this.state = State.PLAY;
         gameMap.setStartLocation(gameMap.getLocations().get(STARTING_LOCATION));
     }
