@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.net.URL;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -35,7 +36,8 @@ public class GamePanel extends JPanel implements Runnable {
   private Inventory inventory;
   private GameMap gameMap;
   private View view = new View();
-
+  private Music music = new Music();
+  private SoundEffect soundEffect = new SoundEffect();
   private GameUI gameUI = new GameUI();
 
   // CONSTRUCTOR
@@ -79,8 +81,10 @@ public class GamePanel extends JPanel implements Runnable {
   public void update() {
     if (game.getState() == State.SLEEP) {
       player.sleep();
+      soundEffect.sleepFx();
     }
     if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()){
+      soundEffect.walkFx();
       // update the player's direction when someone presses W, A, S, or D
       player.updateDirection(keyHandler.isUpPressed(), keyHandler.isDownPressed(), keyHandler.isLeftPressed(), keyHandler.isRightPressed());
       // check if player collides with certain tiles
@@ -112,9 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
     //  titleScreen()}
     if (game.getState().equals(State.TITLE)) {
       view.titleScreen(g2, tileSize, screenWidth);
-
     } else {
-
       // draw tiles
       tileManager.draw(g2, tileSize);
       // draw items
@@ -161,7 +163,7 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setupGame() {
-    game.setState(State.TITLE);
+//    game.setState(State.TITLE);
     // set inventory to the inventory of the current location
     if (game.getCurrentLocationInventory() != null) {
       this.inventory = game.getCurrentLocationInventory();
@@ -209,6 +211,7 @@ public class GamePanel extends JPanel implements Runnable {
       player.setY(entrance[1] * tileSize);
       // load the new map
       tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
+      soundEffect.changeMapFx();
     }
   }
 
@@ -221,7 +224,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // remove the item from the location inventory and add it to the player inventory
         game.transferItemFromTo(inventory, player.getInventory(), itemName);
-
+        soundEffect.pickUpFx();
       } catch (InventoryEmptyException e){
         System.out.println("Item " + itemName + " is not in inventory!");
       } catch (NoEnoughStaminaException e) {
@@ -231,6 +234,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
   }
 
+  public void playBackgroundMusic() {
+    music.playBackgroundMusic();
+  }
   public int getTileSize() {
     return tileSize;
   }

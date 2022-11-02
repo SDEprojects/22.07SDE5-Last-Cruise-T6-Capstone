@@ -13,6 +13,8 @@ public class SoundEffect {
     private static Clip clip;
     private static float soundFxVolume = (-10.0f);
     private static float tempFxVolume = (-10.0f);
+    private int loopCounter = 0;
+
 
     public static void runAudio(URL path) {
         try {
@@ -26,6 +28,30 @@ public class SoundEffect {
             musicControl.setValue(soundFxVolume);
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
+        }
+    }
+    public void changeMapFx() {
+        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("run"));
+        runAudio(sound);
+    }
+    public void pickUpFx() {
+        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("pickup"));
+        runAudio(sound);
+    }
+    public void sleepFx() {
+        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("sleep"));
+        loopCounter++;
+        if (loopCounter > 150) {
+            runAudio(sound);
+            loopCounter = 0;
+        }
+    }
+    public void walkFx() {
+        URL sound = getClass().getResource(AllSounds.ALL_SOUNDS.get("footsteps"));
+        loopCounter++;
+        if (loopCounter > 24) {
+            runAudio(sound);
+            loopCounter = 0;
         }
     }
     public static void decreaseFxVolume(){

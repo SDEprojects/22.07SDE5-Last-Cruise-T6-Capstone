@@ -5,5 +5,7 @@
   "pitFall": "/audio/fall.wav",
   "bell": "/audio/bell.wav",
   "eat": "/audio/eat.wav",
-  "run": "/audio/run.wav"
+  "run": "/audio/run.wav",
+  "sleep": "/audio/snore.wav",
+  "footsteps": "/audio/footsteps.wav"
 }
