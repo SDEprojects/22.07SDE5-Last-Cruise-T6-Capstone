@@ -9,12 +9,15 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class GameUI {
 
   private int slotCol = 0;
   private int slotRow = 0;
+
+  private HashMap<Integer, String> itemNames;
 
   public void drawPlayerStamina(Graphics2D g2, int playerStamina) {
     g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24));
@@ -42,14 +45,15 @@ public class GameUI {
     int slotX = slotXstart;
     int slotY = slotYstart;
 
-    // array list of item names
-    ArrayList<String> itemNames = new ArrayList<>();
     int index = 0;
+    itemNames = new HashMap<>();
     // draw player's items
     for (Item item : playerInventory.getInventory().values()) {
       g2.drawImage(item.getImage(), slotX, slotY, gp.getTileSize(), gp.getTileSize(), null);
       slotX += gp.getTileSize();
-      itemNames.add(item.getName());
+      item.setIndex(index);
+      itemNames.put(index, item.getName());
+      //System.out.println("Item: " + item.getName() + " Index: " + item.getIndex());
 
       if(index == 3) {
         slotX = slotXstart;

@@ -45,8 +45,8 @@
   {
     "name": "steelpipe",
     "description": "a steel pipe that may have been used as mining tool",
-    "x": 0,
-    "y": 11,
+    "x": 2,
+    "y": 7,
     "image": "/items/steelpipe.png"
   },
   {

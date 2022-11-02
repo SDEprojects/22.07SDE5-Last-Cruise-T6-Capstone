@@ -2,11 +2,19 @@ package com.lastcruise.controller;
 
 import com.lastcruise.model.Game;
 import com.lastcruise.model.GamePanel;
+import com.lastcruise.model.Inventory.InventoryEmptyException;
+import com.lastcruise.model.Item;
 import com.lastcruise.model.State;
+import com.lastcruise.model.entity.Entity;
+import com.lastcruise.model.entity.Player;
+import com.lastcruise.model.entity.Player.ItemNotEdibleException;
+import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import com.lastcruise.view.GameUI;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.security.Key;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 
 public class KeyHandler implements KeyListener {
 
@@ -98,26 +106,73 @@ public class KeyHandler implements KeyListener {
       // game state = play
     }
     if (code == KeyEvent.VK_W) {
-      if(gameUI.getSlotCol() != 0){
+      if (gameUI.getSlotCol() != 0) {
         gameUI.setSlotCol(gameUI.getSlotCol() - 1);
       }
     }
     if (code == KeyEvent.VK_A) {
-      if(gameUI.getSlotRow() != 0) {
+      if (gameUI.getSlotRow() != 0) {
         gameUI.setSlotRow(gameUI.getSlotRow() - 1);
       }
     }
     if (code == KeyEvent.VK_S) {
-      if(gameUI.getSlotCol() != 1) {
+      if (gameUI.getSlotCol() != 1) {
         gameUI.setSlotCol(gameUI.getSlotCol() + 1);
       }
     }
     if (code == KeyEvent.VK_D) {
-      if(gameUI.getSlotRow() != 3) {
+      if (gameUI.getSlotRow() != 3) {
         gameUI.setSlotRow(gameUI.getSlotRow() + 1);
       }
-
     }
+    if (code == KeyEvent.VK_ENTER) {
+      //System.out.println("Return");
+      int index = gameUI.getItemIndex();
+      //System.out.println("Item index " + index);
+
+      //System.out.println("Num items: " + game.getPlayerInventory().getInventory().size());
+
+      Item foundItem = null;
+      for (Item item : game.getPlayerInventory().getInventory().values()) {
+        if (item.getIndex() == index) {
+          foundItem = item;
+          System.out.println("Index: " + index + " Name: " + item.getName());
+        }
+      }
+      if (foundItem != null) {
+        if (foundItem.getName().equals("banana")
+            || foundItem.getName().equals("berries")
+            || foundItem.getName().equals("fish")
+            || foundItem.getName().equals("mushroom")) {
+          try {
+            game.eatItem(foundItem.getName());
+          } catch (InventoryEmptyException | ItemNotEdibleException |
+                   ConcurrentModificationException e) {
+            //System.out.println(e);
+          }
+        } else if (foundItem.getName().equals("machete")
+            || foundItem.getName().equals("cloth")
+            || foundItem.getName().equals("log")
+            || foundItem.getName().equals("paddle")
+            || foundItem.getName().equals("rocks")
+            || foundItem.getName().equals("rope")
+            || foundItem.getName().equals("steelpipe")) {
+          try {
+            int x = game.getPlayer().getX() / 48;
+            int y = game.getPlayer().getY() / 48;
+            foundItem.setX(x+1);
+            foundItem.setY(y+1);
+            game.transferItemFromTo(game.getPlayerInventory(), game.getCurrentLocationInventory(),
+                foundItem.getName());
+          } catch (InventoryEmptyException |
+                   ConcurrentModificationException |
+                   NoEnoughStaminaException e) {
+            //System.out.println(e);
+          }
+        }
+      }
+    }
+
   }
 
   public boolean isUpPressed() {
