@@ -126,11 +126,16 @@ public class Game {
         if (currLocationInventory.keySet()
             .containsAll(requiredForRaft)) {
 
+
             for (var requiredItem : requiredForRaft) {
                 currLocationInventory.remove(requiredItem);
             }
+
+            System.out.println("Building the raft");
             currLocationInventory.put("raft", GameItems.GAME_ITEMS_HASHMAP.get("raft"));
             return true;
+        } else {
+            System.out.println("You don't have all the required items to build the raft!");
         }
         return false;
     }

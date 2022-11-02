@@ -65,6 +65,10 @@ public class KeyHandler implements KeyListener {
     if (game.getState() == State.INVENTORY) {
       inventoryState(code);
     }
+
+    if (code == KeyEvent.VK_B){
+      game.craftRaft();
+    }
   }
 
   @Override

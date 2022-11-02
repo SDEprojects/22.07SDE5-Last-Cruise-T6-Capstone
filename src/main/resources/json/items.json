@@ -52,6 +52,9 @@
   {
     "name": "raft",
     "description": "raft description",
+    "x": 7,
+    "y": 8,
+    "image": "/items/raft.png",
     "required": ["log","cloth","rope","steelpipe","paddle"]
   },
   {
