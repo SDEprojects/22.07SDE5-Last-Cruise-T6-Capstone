@@ -158,10 +158,10 @@ public class KeyHandler implements KeyListener {
             || foundItem.getName().equals("rope")
             || foundItem.getName().equals("steelpipe")) {
           try {
-            int x = game.getPlayer().getX() / 48;
-            int y = game.getPlayer().getY() / 48;
-            foundItem.setX(x+1);
-            foundItem.setY(y+1);
+            int x = (game.getPlayer().getX() + 64) / 48;
+            int y = (game.getPlayer().getY() + 64) / 48;
+            foundItem.setX(x);
+            foundItem.setY(y);
             game.transferItemFromTo(game.getPlayerInventory(), game.getCurrentLocationInventory(),
                 foundItem.getName());
           } catch (InventoryEmptyException |
