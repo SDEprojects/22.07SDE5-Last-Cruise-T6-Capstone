@@ -66,14 +66,14 @@ public class Collision {
         entity.setSolidAreaX((entity.getX() + entity.getSolidArea().x));
         entity.setSolidAreaY((entity.getY() + entity.getSolidArea().y));
 
-        System.out.println("Entity: x " + entity.getSolidArea().x);
-        System.out.println("Entity: y " + entity.getSolidArea().y);
+//        System.out.println("Entity: x " + entity.getSolidArea().x);
+//        System.out.println("Entity: y " + entity.getSolidArea().y);
 
         item.setSolidAreaX((item.getX() * tileSize) + item.getSolidArea().x);
         item.setSolidAreaY((item.getY() *tileSize) + item.getSolidArea().y);
 
-        System.out.println(item.getName() + " x: " +  item.getSolidArea().x);
-        System.out.println(item.getName() + " y: " +  item.getSolidArea().y);
+//        System.out.println(item.getName() + " x: " +  item.getSolidArea().x);
+//        System.out.println(item.getName() + " y: " +  item.getSolidArea().y);
 
         switch(entity.getDirection()) {
           case "up":

@@ -4,8 +4,17 @@ public enum State {
   TITLE,
   WIN,
   LOSE,
-  PLAY,
   HELP,
-  INVENTORY
+  INVENTORY,
+  SLEEP,
+  PLAY {
+    @Override
+    public boolean isTerminal() {
+      return false;
+    }
+  };
 
+  public boolean isTerminal() {
+    return true;
+  }
 }

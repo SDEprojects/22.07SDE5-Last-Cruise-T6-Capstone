@@ -25,7 +25,7 @@ public class Game {
     public Game(String playerName) {
         this.gameMap = new GameMap();
         this.player = new Player(playerName);
-        this.state = State.TITLE;
+        this.state = State.PLAY;
         gameMap.setStartLocation(gameMap.getLocations().get(STARTING_LOCATION));
     }
     public Player getPlayer() {
@@ -43,15 +43,6 @@ public class Game {
     public void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
     }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
     @JsonIgnore
     public Location getCurrentLocation() {
         return gameMap.getCurrentLocation();
@@ -140,6 +131,14 @@ public class Game {
 
     public  void playerSleep(){
         player.sleep();
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getState(){
+        return state;
     }
 
 }
