@@ -11,18 +11,6 @@ import javax.imageio.ImageIO;
 
 public class View {
 
-
-    public int getWinGameBoxPosition() {
-        return winGameBoxPosition;
-    }
-
-    public void setWinGameBoxPosition(int winGameBoxPosition) {
-        this.winGameBoxPosition = winGameBoxPosition;
-    }
-
-    private int winGameBoxPosition = 0;
-
-
     // ================================ ORIGINAL GAME PLAY========================================
 
     private final Map<String, String> GAME_TEXT;
@@ -67,119 +55,6 @@ public class View {
             locationItems,
             message);
     }
-
-    public void titleScreen(Graphics2D g2, int tileSize, int screenWidth)  {
-        BufferedImage titleImage = null;
-        try {
-            titleImage = ImageIO.read(getClass().getResourceAsStream("/title/ship.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 90F));
-        String gameTitle = "LAST CRUISE";
-        int x = getXforCenteredText(gameTitle, g2, screenWidth);
-        int y = tileSize*3;
-        g2.setColor(Color.white);
-        g2.drawString(gameTitle, x, y);
-        g2.setColor(new Color(0, 0, 0));
-        g2.fillRect(0, 0, screenWidth, tileSize);
-        //shadow
-        g2.setColor(Color.white);
-        g2.drawString(gameTitle, x+5, y+5);
-
-        //Image
-       x = screenWidth/2 -(tileSize*2)/2;
-       y += tileSize*2;
-        g2.drawImage(titleImage, tileSize*5, tileSize*3, tileSize*6,tileSize*6, null);
-
-        //Menu
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
-        gameTitle = "NEW GAME";
-        x = getXforCenteredText(gameTitle, g2, screenWidth);
-        y += tileSize*4;
-        g2.drawString(gameTitle, x, y);
-
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
-        gameTitle = "LOAD GAME";
-        x = getXforCenteredText(gameTitle, g2, screenWidth);
-        y += tileSize;
-        g2.drawString(gameTitle, x, y);
-
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
-        gameTitle = "EXIT GAME";
-        x = getXforCenteredText(gameTitle, g2, screenWidth);
-        y += tileSize;
-        g2.drawString(gameTitle, x, y);
-    }
-
-     private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
-        int length = (int)g2.getFontMetrics().getStringBounds(gameTitle, g2).getWidth();
-        int x = screenWidth/2-length/2;
-        return x;
-    }
-
-    public void winScreen(Graphics2D g2, int tileSize, int screenWidth) {
-        BufferedImage winImage = null;
-        try {
-            winImage = ImageIO.read(getClass().getResourceAsStream("/win/win_image.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80F));
-        String gameTitle = "YOU WIN!!";
-        int x = getXforCenteredText(gameTitle, g2, screenWidth);
-        int y = tileSize * 2;
-        g2.setColor(Color.white);
-        g2.drawString(gameTitle, x, y);
-        g2.setColor(new Color(0, 0, 0));
-        g2.fillRect(0, 0, screenWidth, tileSize);
-        //shadow
-        g2.setColor(Color.white);
-        g2.drawString(gameTitle, x + 5, y + 5);
-
-        //Image
-        x = screenWidth / 2 - (tileSize * 2) / 2;
-        y += tileSize * 2;
-        g2.drawImage(winImage, tileSize * 5, tileSize * 3, tileSize * 6, tileSize * 6, null);
-
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
-        gameTitle = "NEW GAME";
-        x = getXforCenteredText(gameTitle, g2, screenWidth);
-        y += tileSize*5;
-        g2.drawString(gameTitle, tileSize*7, tileSize*9);
-
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
-        gameTitle = "EXIT GAME";
-        x = getXforCenteredText(gameTitle, g2, screenWidth);
-        y += tileSize*4;
-        g2.drawString(gameTitle, tileSize*7, tileSize*10);
-
-        //int box_y = (y + (tileSize*4));
-        int box_x = getXforCenteredText(gameTitle, g2, screenWidth);
-
-        // white box position for exit game
-        int exit_game_x = (tileSize*7) - 24;
-        int exit_game_y = (tileSize*9) + 14;
-
-        // white box position for new game
-        int new_game_x = (tileSize*7) - 24;
-        int new_game_y = (tileSize*8) + 14;
-
-        //
-
-        drawWhiteBox(g2, new_game_x, new_game_y, tileSize, tileSize, 25, 25);
-    }
-
-    public void drawWhiteBox(Graphics2D g2, int cursorX, int cursorY, int cursorWidth,
-        int cursorHeight, int arcWidth, int arcHeight) {
-        // draw cursor
-        g2.setColor(Color.white);
-        // set the box width
-        g2.setStroke(new BasicStroke(5));
-        // draw cursor
-        g2.drawRoundRect(cursorX, cursorY, cursorWidth*4, cursorHeight, 25, 25);
-    }
-
 
     //------------VIEW MESSAGES------------------------------------------
     public String getItemDescription(String description) {
