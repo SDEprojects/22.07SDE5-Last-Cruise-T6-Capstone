@@ -4,6 +4,7 @@ import com.lastcruise.controller.KeyHandler;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.entity.Entity;
 import com.lastcruise.model.entity.Player;
+import com.lastcruise.model.entity.Player.ItemNotEdibleException;
 import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import com.lastcruise.model.tile.TileManager;
 import com.lastcruise.view.View;
@@ -12,6 +13,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.net.URL;
+import java.util.ConcurrentModificationException;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -39,7 +42,8 @@ public class GamePanel extends JPanel implements Runnable {
   private Inventory inventory;
   private GameMap gameMap;
   private View view = new View();
-
+  private Music music = new Music();
+  private SoundEffect soundEffect = new SoundEffect();
   private GameUI gameUI = new GameUI();
 
   // CONSTRUCTOR
@@ -84,9 +88,22 @@ public class GamePanel extends JPanel implements Runnable {
   public void update() {
     if (game.getState() == State.SLEEP) {
       player.sleep();
+      soundEffect.loadAndPlayFx("sleep");
     }
-    if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed()
-        || keyHandler.isRightPressed()) {
+    if (game.getState() == State.INVENTORY){
+      if (keyHandler.isEnterPressed()){
+        dropItem();
+      }
+
+//      soundEffect.dropFx();
+    }
+    if (keyHandler.isBuildPressed()) {
+      game.craftRaft();
+      soundEffect.loadAndPlayFx("build");
+      keyHandler.setBuildPressed(false);
+    }
+    if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()){
+      soundEffect.loadAndPlayFx("footsteps");
       // update the player's direction when someone presses W, A, S, or D
       player.updateDirection(keyHandler.isUpPressed(), keyHandler.isDownPressed(),
           keyHandler.isLeftPressed(), keyHandler.isRightPressed());
@@ -116,9 +133,12 @@ public class GamePanel extends JPanel implements Runnable {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
     //if (gameState == title){
-    //  titleScreen()}
-    if (game.getState().equals(State.TITLE)) {
-      view.titleScreen(g2, tileSize, screenWidth);
+     // titleScreen()}
+    if (game.getState().equals(State.WIN)) {
+      view.winScreen(g2, tileSize, screenWidth);
+
+//    if (game.getState().equals(State.TITLE)) {
+//      view.titleScreen(g2, tileSize, screenWidth);
 
     } else {
 
@@ -147,7 +167,7 @@ public class GamePanel extends JPanel implements Runnable {
       }
 
       if (game.getState().equals(State.HELP)) {
-        gameUI.drawHelpMenu(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2);
+        gameUI.drawHelpMenu(tileSize * 2, tileSize * 7, tileSize * 12, tileSize * 5, g2);
       }
       if (game.getState().equals(State.SLEEP)) {
         if (player.getStamina() < 100) {
@@ -158,10 +178,10 @@ public class GamePanel extends JPanel implements Runnable {
               new String[]{"You have full stamina. WAKE UP!"});
         }
       }
-
-      if (game.getState().equals(State.WIN)){
+      if (player.getStamina() == 0) {
         gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2,
-            new String[]{"You escaped the island!"});
+            new String[]{"Uh oh...", "You have no more stamina!", "Are you tired?",
+                "Do you need some rest?", "Are you hungry?"});
       }
       g2.dispose();
     }
@@ -204,34 +224,33 @@ public class GamePanel extends JPanel implements Runnable {
       }
     }
 
-    // checks if the map needs to change and places player in correct map and position
-    private void updateMap () {
-      int tileX = player.getX() / tileSize;
-      int tileY = player.getY() / tileSize;
-      Location current = gameMap.getCurrentLocation();
-      // checks if the tile is a transition tile and returns current map
-      String newMap = current.checkForMapTransition(tileX, tileY, player.getDirection());
-      if (!current.getName().equals(newMap)) {
-        // change current location to new location
-        gameMap.setCurrentLocation(gameMap.getLocations().get(newMap));
-        // places the player at the entrance for the new map
-        int[] entrance = gameMap.getCurrentLocation().getEntranceCoordinates(player.getDirection());
-        player.setX(entrance[0] * tileSize);
-        player.setY(entrance[1] * tileSize);
-        // load the new map
-        tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
-      }
+  // checks if the map needs to change and places player in correct map and position
+  private void updateMap() {
+    int tileX = player.getX() / tileSize;
+    int tileY = player.getY() / tileSize;
+    Location current = gameMap.getCurrentLocation();
+    // checks if the tile is a transition tile and returns current map
+    String newMap = current.checkForMapTransition(tileX, tileY, player.getDirection());
+    if (!current.getName().equals(newMap)){
+      // change current location to new location
+      gameMap.setCurrentLocation(gameMap.getLocations().get(newMap));
+      // places the player at the entrance for the new map
+      int[] entrance = gameMap.getCurrentLocation().getEntranceCoordinates(player.getDirection());
+      player.setX(entrance[0] * tileSize);
+      player.setY(entrance[1] * tileSize);
+      // load the new map
+      tileManager.loadMap(gameMap.getCurrentLocation().getFilepath());
+      soundEffect.loadAndPlayFx("run");
     }
+  }
 
     public void pickupItem (String itemName){
       if (!itemName.equals("")) {
         try {
-
-          player.setStamina(player.getStamina() - 10);
-
+          player.reduceStaminaPickUp();
           // remove the item from the location inventory and add it to the player inventory
           game.transferItemFromTo(inventory, player.getInventory(), itemName);
-
+          soundEffect.loadAndPlayFx("pickup");
         } catch (InventoryEmptyException e) {
           System.out.println("Item " + itemName + " is not in inventory!");
         } catch (NoEnoughStaminaException e) {
@@ -240,8 +259,44 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
     }
+    public void dropItem() {
+      int index = gameUI.getItemIndex();
+      Item foundItem = null;
+      for (Item item : game.getPlayerInventory().getInventory().values()) {
+        if (item.getIndex() == index) {
+          foundItem = item;
+          System.out.println("Index: " + index + " Name: " + item.getName());
+        }
+      }
+      if (foundItem != null) {
+        String action = foundItem.checkEatOrDrop();
+        if (action.equals("eat")) {
+          try {
+            game.eatItem(foundItem.getName());
+            soundEffect.loadAndPlayFx("eat");
+          } catch (InventoryEmptyException | ItemNotEdibleException |
+                   ConcurrentModificationException e) {
+            //System.out.println(e);
+          }
+        } else if (action.equals("drop")) {
+          try {
+            foundItem.updateItemLocation(player.getX(), player.getY());
+            game.transferItemFromTo(game.getPlayerInventory(), game.getCurrentLocationInventory(),
+                foundItem.getName());
+            soundEffect.loadAndPlayFx("drop");
+          } catch (InventoryEmptyException |
+                   ConcurrentModificationException |
+                   NoEnoughStaminaException e) {
+            //System.out.println(e);
+          }
+        }
+      }
+      keyHandler.setEnterPressed(false);
+    }
 
-
+  public void playBackgroundMusic() {
+    music.playBackgroundMusic();
+  }
   public int getTileSize() {
     return tileSize;
   }
@@ -251,5 +306,4 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
 }
-
 

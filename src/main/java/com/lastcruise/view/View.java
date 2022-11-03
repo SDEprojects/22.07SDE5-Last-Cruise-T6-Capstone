@@ -112,6 +112,43 @@ public class View {
         return x;
     }
 
+    public void winScreen(Graphics2D g2, int tileSize, int screenWidth) {
+        BufferedImage winImage = null;
+        try {
+            winImage = ImageIO.read(getClass().getResourceAsStream("/win/win_image.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80F));
+        String gameTitle = "YOU WIN!!";
+        int x = getXforCenteredText(gameTitle, g2, screenWidth);
+        int y = tileSize * 2;
+        g2.setColor(Color.white);
+        g2.drawString(gameTitle, x, y);
+        g2.setColor(new Color(0, 0, 0));
+        g2.fillRect(0, 0, screenWidth, tileSize);
+        //shadow
+        g2.setColor(Color.white);
+        g2.drawString(gameTitle, x + 5, y + 5);
+
+        //Image
+        x = screenWidth / 2 - (tileSize * 2) / 2;
+        y += tileSize * 2;
+        g2.drawImage(winImage, tileSize * 5, tileSize * 3, tileSize * 6, tileSize * 6, null);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+        gameTitle = "NEW GAME";
+        x = getXforCenteredText(gameTitle, g2, screenWidth);
+        y += tileSize*5;
+        g2.drawString(gameTitle, tileSize*7, tileSize*9);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+        gameTitle = "EXIT GAME";
+        x = getXforCenteredText(gameTitle, g2, screenWidth);
+        y += tileSize*4;
+        g2.drawString(gameTitle, tileSize*7, tileSize*10);
+    }
+
 
     //------------VIEW MESSAGES------------------------------------------
     public String getItemDescription(String description) {
