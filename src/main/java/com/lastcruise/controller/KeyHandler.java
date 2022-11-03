@@ -69,6 +69,16 @@ public class KeyHandler implements KeyListener {
     if (code == KeyEvent.VK_B){
       game.craftRaft();
     }
+
+    if (code == KeyEvent.VK_E){
+      boolean win = game.escapeIsland();
+      if(win){
+        System.out.println("You escaped the island!");
+        game.setState(State.WIN);
+      }else {
+        System.out.println("You can not escape the island without a raft!");
+      }
+    }
   }
 
   @Override

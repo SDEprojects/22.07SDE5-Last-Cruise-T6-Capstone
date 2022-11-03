@@ -158,6 +158,11 @@ public class GamePanel extends JPanel implements Runnable {
               new String[]{"You have full stamina. WAKE UP!"});
         }
       }
+
+      if (game.getState().equals(State.WIN)){
+        gameUI.drawStringInSubWindow(tileSize * 2, tileSize * 8, tileSize * 12, tileSize * 4, g2,
+            new String[]{"You escaped the island!"});
+      }
       g2.dispose();
     }
   }
