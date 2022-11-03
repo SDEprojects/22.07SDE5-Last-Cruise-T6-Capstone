@@ -86,7 +86,6 @@ public class Game {
 
     public void moveLocation(String[] direction)
         throws InvalidLocationException, NoEnoughStaminaException {
-        player.reduceStaminaMove();
         gameMap.updateCurrentLocation(direction);
 
 

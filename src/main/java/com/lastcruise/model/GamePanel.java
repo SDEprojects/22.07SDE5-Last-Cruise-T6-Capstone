@@ -119,7 +119,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     if (game.getState() == State.WIN) {
       if (keyHandler.isEnterPressed()) {
+        keyHandler.setEnterPressed(false);
         if (gameUI.getWinGameBoxPosition() == 0) {
+          System.out.println("Start new game selected!");
           game.setState(State.TITLE);
         } else {
           System.exit(0);
@@ -166,8 +168,11 @@ public class GamePanel extends JPanel implements Runnable {
     if (game.getState().equals(State.TITLE)) {
       gameUI.titleScreen(g2, tileSize, screenWidth);
     } else if (game.getState().equals(State.WIN)) {
+      stopBackgroundMusic();
       gameUI.winScreen(g2, tileSize, screenWidth);
+      soundEffect.loadAndPlayFx("win");
     } else if (game.getState().equals(State.LOSE)) {
+      stopBackgroundMusic();
       gameUI.loseScreen(g2, tileSize, screenWidth);
     } else {
 
@@ -274,7 +279,9 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
     public void pickupItem (String itemName){
-      if (!itemName.equals("")) {
+
+      if (!itemName.equals("") && (player.getInventory().getInventory().size() < 8)) {
+        System.out.println("Num of items: " + player.getInventory().getInventory().size());
         try {
           player.reduceStaminaPickUp();
           // remove the item from the location inventory and add it to the player inventory
@@ -324,8 +331,15 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
   public void playBackgroundMusic() {
-    music.playBackgroundMusic();
+    URL backgroundMusic = getClass().getResource(AllSounds.ALL_SOUNDS.get("main"));
+    Music.runAudio(backgroundMusic);
+    //music.playBackgroundMusic();
   }
+
+  public void stopBackgroundMusic() {
+    Music.muteMusic();
+  }
+
   public int getTileSize() {
     return tileSize;
   }
