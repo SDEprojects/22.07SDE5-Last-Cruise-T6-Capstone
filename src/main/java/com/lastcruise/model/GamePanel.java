@@ -35,16 +35,16 @@ public class GamePanel extends JPanel implements Runnable {
 
   private Player player;
 
-  private TileManager tileManager = new TileManager( maxScreenCol, maxScreenRow);
-  private Collision collision = new Collision(tileSize, tileManager.getMapTileIndex(), tileManager.getTile());
+  private TileManager tileManager;
+  private Collision collision;
 
   private Game game;
   private Inventory inventory;
   private GameMap gameMap;
-  private View view = new View();
-  private Music music = new Music();
-  private SoundEffect soundEffect = new SoundEffect();
-  private GameUI gameUI = new GameUI();
+  private View view;
+  private Music music;
+  private SoundEffect soundEffect;
+  private GameUI gameUI;
 
   // CONSTRUCTOR
   public GamePanel() {
@@ -56,6 +56,12 @@ public class GamePanel extends JPanel implements Runnable {
     this.setFocusable(true);
     this.inventory = new Inventory();
     this.game = new Game(player);
+    this.view = new View();
+    this.music = new Music();
+    this.soundEffect = new SoundEffect();
+    this.gameUI = new GameUI();
+    this.tileManager = new TileManager( maxScreenCol, maxScreenRow);
+    this.collision = new Collision(tileSize, tileManager.getMapTileIndex(), tileManager.getTile());
     keyHandler.setGame(game);
     keyHandler.setGameUI(gameUI);
     game.setPlayer(this.player);
@@ -86,6 +92,21 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void update() {
+    if (game.getState() == State.TITLE && keyHandler.isEnterPressed()) {
+      switch (gameUI.getRowSelection()){
+        case 0:
+          game.setState(State.PLAY);
+          break;
+        case 1:
+          game.setState(State.PLAY);
+          System.out.println("load game");
+          break;
+        case 2:
+          System.exit(0);
+          break;
+      }
+      keyHandler.setEnterPressed(false);
+    }
     if (game.getState() == State.SLEEP) {
       player.sleep();
       soundEffect.loadAndPlayFx("sleep");
@@ -94,8 +115,6 @@ public class GamePanel extends JPanel implements Runnable {
       if (keyHandler.isEnterPressed()){
         dropItem();
       }
-
-//      soundEffect.dropFx();
     }
     if (keyHandler.isBuildPressed()) {
       game.craftRaft();
@@ -133,17 +152,14 @@ public class GamePanel extends JPanel implements Runnable {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
     //if (gameState == title){
-     // titleScreen()}
-    if (game.getState().equals(State.WIN)) {
-      view.winScreen(g2, tileSize, screenWidth);
-
-//    if (game.getState().equals(State.TITLE)) {
-//      view.titleScreen(g2, tileSize, screenWidth);
-    if (game.getState().equals(State.LOSE)) {
+    // titleScreen()}
+    if (game.getState().equals(State.TITLE)) {
+      gameUI.titleScreen(g2, tileSize, screenWidth);
+    } else if (game.getState().equals(State.WIN)) {
+      gameUI.winScreen(g2, tileSize, screenWidth);
+    } else if (game.getState().equals(State.LOSE)) {
       gameUI.loseScreen(g2, tileSize, screenWidth);
-
     } else {
-
       // draw tiles
       tileManager.draw(g2, tileSize);
       // draw items
@@ -190,7 +206,7 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
     public void setupGame () {
-      //game.setState(State.TITLE);
+      game.setState(State.TITLE);
       // set inventory to the inventory of the current location
       if (game.getCurrentLocationInventory() != null) {
         this.inventory = game.getCurrentLocationInventory();
@@ -308,5 +324,4 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
 }
-
 

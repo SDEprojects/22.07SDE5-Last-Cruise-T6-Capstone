@@ -8,17 +8,113 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.imageio.ImageIO;
 
 
 public class GameUI {
 
   private int slotCol = 0;
   private int slotRow = 0;
+  private int rowSelection = 0;
 
   private HashMap<Integer, String> itemNames;
+  public void titleScreen(Graphics2D g2, int tileSize, int screenWidth)  {
+    BufferedImage titleImage = null;
+    try {
+      titleImage = ImageIO.read(getClass().getResourceAsStream("/title/ship.png"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 90F));
+    String gameTitle = "LAST CRUISE";
+    int x = getXforCenteredText(gameTitle, g2, screenWidth);
+    int y = tileSize*3;
+    g2.setColor(Color.white);
+    g2.drawString(gameTitle, x, y);
+    g2.setColor(new Color(0, 0, 0));
+    g2.fillRect(0, 0, screenWidth, tileSize);
+    //shadow
+    g2.setColor(Color.white);
+    g2.drawString(gameTitle, x+5, y+5);
 
+    //Image
+    x = screenWidth/2 -(tileSize*2)/2;
+    y += tileSize*2;
+    g2.drawImage(titleImage, tileSize*5, tileSize*3, tileSize*6,tileSize*6, null);
+
+    //Menu
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
+    gameTitle = "NEW GAME";
+    x = getXforCenteredText(gameTitle, g2, screenWidth);
+    y += tileSize*4;
+    g2.drawString(gameTitle, x, y);
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
+    gameTitle = "LOAD GAME";
+    x = getXforCenteredText(gameTitle, g2, screenWidth);
+    y += tileSize;
+    g2.drawString(gameTitle, x, y);
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
+    gameTitle = "EXIT GAME";
+    x = getXforCenteredText(gameTitle, g2, screenWidth);
+    y += tileSize;
+    g2.drawString(gameTitle, x, y);
+
+    // cursor set up
+    int cursorX = x - 24;
+    int cursorY = y - tileSize * (3 - rowSelection) + 6;
+    g2.setColor(Color.BLUE);
+    g2.setStroke(new BasicStroke(3));
+    g2.drawRoundRect(cursorX, cursorY, tileSize * 6 + 12, tileSize, 25, 25);
+  }
+
+  public void winScreen(Graphics2D g2, int tileSize, int screenWidth) {
+    BufferedImage winImage = null;
+    try {
+      winImage = ImageIO.read(getClass().getResourceAsStream("/win/win_image.png"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80F));
+    String gameTitle = "YOU WIN!!";
+    int x = getXforCenteredText(gameTitle, g2, screenWidth);
+    int y = tileSize * 2;
+    g2.setColor(Color.white);
+    g2.drawString(gameTitle, x, y);
+    g2.setColor(new Color(0, 0, 0));
+    g2.fillRect(0, 0, screenWidth, tileSize);
+    //shadow
+    g2.setColor(Color.white);
+    g2.drawString(gameTitle, x + 5, y + 5);
+
+    //Image
+    x = screenWidth / 2 - (tileSize * 2) / 2;
+    y += tileSize * 2;
+    g2.drawImage(winImage, tileSize * 5, tileSize * 3, tileSize * 6, tileSize * 6, null);
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+    gameTitle = "NEW GAME";
+    x = getXforCenteredText(gameTitle, g2, screenWidth);
+    y += tileSize*5;
+    g2.drawString(gameTitle, tileSize*7, tileSize*9);
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+    gameTitle = "EXIT GAME";
+    x = getXforCenteredText(gameTitle, g2, screenWidth);
+    y += tileSize*4;
+    g2.drawString(gameTitle, tileSize*7, tileSize*10);
+  }
+
+  private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
+    int length = (int)g2.getFontMetrics().getStringBounds(gameTitle, g2).getWidth();
+    int x = screenWidth/2-length/2;
+    return x;
+  }
   public void drawPlayerStamina(Graphics2D g2, int playerStamina) {
     g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24));
     g2.drawString("Stamina", 24, 24);
@@ -198,5 +294,11 @@ public class GameUI {
     this.slotRow = slotRow;
   }
 
+  public int getRowSelection() {
+    return rowSelection;
+  }
 
+  public void setRowSelection(int rowSelection) {
+    this.rowSelection = rowSelection;
+  }
 }

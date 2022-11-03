@@ -33,7 +33,10 @@ public class KeyHandler implements KeyListener {
   @Override
   public void keyPressed(KeyEvent e) {
     int code = e.getKeyCode();
-
+    if (game.getState() == State.TITLE) {
+      System.out.println("how about here");
+      titleState(code);
+    }
     if (code == KeyEvent.VK_I) {
       if (isInventoryState()) {
         inventoryState = false;
@@ -59,6 +62,7 @@ public class KeyHandler implements KeyListener {
         game.setState(State.SLEEP);
       }
     }
+
     if (game.getState() == State.PLAY) {
       playState(code);
     }
@@ -98,7 +102,21 @@ public class KeyHandler implements KeyListener {
       rightPressed = false;
     }
   }
-
+  public void titleState(int code) {
+      if (code == KeyEvent.VK_W) {
+      if (gameUI.getRowSelection() != 0) {
+        gameUI.setRowSelection(gameUI.getRowSelection() - 1);
+      }
+    }
+    if (code == KeyEvent.VK_S) {
+      if (gameUI.getRowSelection() != 2) {
+        gameUI.setRowSelection(gameUI.getRowSelection() + 1);
+      }
+    }
+    if (code == KeyEvent.VK_ENTER) {
+      enterPressed = true;
+    }
+  }
   public void playState(int code) {
     if (code == KeyEvent.VK_W) {
       upPressed = true;
