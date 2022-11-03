@@ -85,8 +85,7 @@ public class Player extends Entity {
         if (getMovementCounter() < 30) {
             if (stamina < 0) {
                 setSpeed(0);
-                // throw not enough stamina exception
-                System.out.println("you ran out of stamina");
+                stamina = 0;
             } else if (stamina == 0) {
                 setSpeed(0);
             } else if (stamina <= 25) {
@@ -165,7 +164,7 @@ public class Player extends Entity {
     }
 
     public void reduceStaminaMove() throws NoEnoughStaminaException {
-        int energy = 15;
+        int energy = 0;
         if (hasEnoughStamina(energy)) {
             stamina -= energy;
         } else {
@@ -174,7 +173,7 @@ public class Player extends Entity {
     }
 
     public void reduceStaminaPickUp() throws NoEnoughStaminaException {
-        int energy = 10;
+        int energy = 0;
         if (hasEnoughStamina(energy)) {
             stamina -= energy;
             System.out.println("Staminia: " + stamina);
@@ -199,7 +198,6 @@ public class Player extends Entity {
             throw new ItemNotEdibleException();
         }
     }
-
     public void sleep(){
         sleepTimer++;
         if (stamina < 100 && sleepTimer > 5) {

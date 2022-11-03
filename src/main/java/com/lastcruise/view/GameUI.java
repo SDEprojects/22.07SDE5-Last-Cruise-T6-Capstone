@@ -115,6 +115,8 @@ public class GameUI {
         "Press B key to BUILD something",
         "Press E key to ESCAPE the island",
         "Press H key to close and open the HELP menu",
+        "Press M key to change sound and MUSIC",
+        "Press ENTER to make a selection",
     };
     for (int i = 0; i < helpMenu.length; i++) {
       g2.drawString(helpMenu[i], indentX, indentY + 20 * (i + 1));
