@@ -10,12 +10,6 @@ import javax.imageio.ImageIO;
 
 public class View {
 
-
-
-
-
-
-
     // ================================ ORIGINAL GAME PLAY========================================
 
     private final Map<String, String> GAME_TEXT;
@@ -60,9 +54,6 @@ public class View {
             locationItems,
             message);
     }
-
-
-
 
     //------------VIEW MESSAGES------------------------------------------
     public String getItemDescription(String description) {

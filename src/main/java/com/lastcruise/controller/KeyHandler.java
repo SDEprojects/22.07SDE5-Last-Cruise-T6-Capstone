@@ -10,9 +10,9 @@ import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.entity.Player.ItemNotEdibleException;
 import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import com.lastcruise.view.GameUI;
+import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
@@ -83,6 +83,15 @@ public class KeyHandler implements KeyListener {
         System.out.println("You can not escape the island without a raft!");
       }
     }
+
+    if (code == KeyEvent.VK_P){
+      game.setState(State.WIN);
+    }
+
+    if (game.getState() == State.WIN) {
+      winState(code);
+    }
+
   }
 
   @Override
@@ -160,7 +169,18 @@ public class KeyHandler implements KeyListener {
     if (code == KeyEvent.VK_ENTER) {
       enterPressed = true;
     }
+  }
 
+  public void winState(int code) {
+    if(code == KeyEvent.VK_W) {
+      gameUI.setWinGameBoxPosition(0);
+    }
+    if(code == KeyEvent.VK_S) {
+      gameUI.setWinGameBoxPosition(1);
+    }
+    if(code == KeyEvent.VK_ENTER){
+      enterPressed = true;
+    }
   }
 
   public boolean isUpPressed() {

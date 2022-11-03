@@ -25,10 +25,7 @@ public class Music {
             e.printStackTrace();
         }
     }
-    public void playBackgroundMusic() {
-        URL backgroundMusic = getClass().getResource(AllSounds.ALL_SOUNDS.get("main"));
-        runAudio(backgroundMusic);
-    }
+
     public static void decreaseMusic(){
         musicControl.setValue(musicControl.getValue() - 6.0f);
     }
