@@ -118,9 +118,6 @@ public class Game {
     public void eatItem(String itemName) throws InventoryEmptyException, ItemNotEdibleException {
         player.consumeItem(itemName);
     }
-    public void dripItem(String itemName) {
-
-    }
 
     public boolean craftRaft() {
         java.util.Map<String, Item> currLocationInventory = getCurrentLocation().getItems().getInventory();

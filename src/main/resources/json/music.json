@@ -8,5 +8,7 @@
   "run": "/audio/run.wav",
   "sleep": "/audio/snore.wav",
   "footsteps": "/audio/footsteps.wav",
-  "build": "/audio/hammer.wav"
+  "build": "/audio/hammer.wav",
+  "win": "/audio/success-trumpets.wav",
+  "lose": "/audio/failure.wav"
 }
