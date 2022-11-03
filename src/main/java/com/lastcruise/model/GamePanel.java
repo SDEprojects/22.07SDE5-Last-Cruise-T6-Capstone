@@ -189,7 +189,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame () {
       //game.setState(State.TITLE);
-      game.setState(State.WIN);
       // set inventory to the inventory of the current location
       if (game.getCurrentLocationInventory() != null) {
         this.inventory = game.getCurrentLocationInventory();

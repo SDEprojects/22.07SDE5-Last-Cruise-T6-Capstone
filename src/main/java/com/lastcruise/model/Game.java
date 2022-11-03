@@ -140,6 +140,10 @@ public class Game {
         return false;
     }
 
+    public boolean escapeIsland(){
+        return getCurrentLocationInventory().getInventory().get("raft") != null;
+    }
+
     public  void playerSleep(){
         player.sleep();
     }
