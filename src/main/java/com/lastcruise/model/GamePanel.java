@@ -133,9 +133,12 @@ public class GamePanel extends JPanel implements Runnable {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
     //if (gameState == title){
-    //  titleScreen()}
-    if (game.getState().equals(State.TITLE)) {
-      view.titleScreen(g2, tileSize, screenWidth);
+     // titleScreen()}
+    if (game.getState().equals(State.WIN)) {
+      view.winScreen(g2, tileSize, screenWidth);
+
+//    if (game.getState().equals(State.TITLE)) {
+//      view.titleScreen(g2, tileSize, screenWidth);
 
     } else {
 
@@ -186,6 +189,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame () {
       //game.setState(State.TITLE);
+      game.setState(State.WIN);
       // set inventory to the inventory of the current location
       if (game.getCurrentLocationInventory() != null) {
         this.inventory = game.getCurrentLocationInventory();
