@@ -157,6 +157,8 @@ public class GamePanel extends JPanel implements Runnable {
       gameUI.titleScreen(g2, tileSize, screenWidth);
     } else if (game.getState().equals(State.WIN)) {
       gameUI.winScreen(g2, tileSize, screenWidth);
+    } else if (game.getState().equals(State.LOSE)) {
+      gameUI.loseScreen(g2, tileSize, screenWidth);
     } else {
       // draw tiles
       tileManager.draw(g2, tileSize);
