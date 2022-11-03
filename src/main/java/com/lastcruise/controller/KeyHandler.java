@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class KeyHandler implements KeyListener {
 
-  private boolean upPressed, downPressed, leftPressed, rightPressed;
+  private boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, buildPressed;
 
   private boolean inventoryState = false;
 
@@ -67,7 +67,7 @@ public class KeyHandler implements KeyListener {
     }
 
     if (code == KeyEvent.VK_B){
-      game.craftRaft();
+      buildPressed = true;
     }
   }
 
@@ -130,51 +130,7 @@ public class KeyHandler implements KeyListener {
       }
     }
     if (code == KeyEvent.VK_ENTER) {
-      //System.out.println("Return");
-      int index = gameUI.getItemIndex();
-      //System.out.println("Item index " + index);
-
-      //System.out.println("Num items: " + game.getPlayerInventory().getInventory().size());
-
-      Item foundItem = null;
-      for (Item item : game.getPlayerInventory().getInventory().values()) {
-        if (item.getIndex() == index) {
-          foundItem = item;
-          System.out.println("Index: " + index + " Name: " + item.getName());
-        }
-      }
-      if (foundItem != null) {
-        if (foundItem.getName().equals("banana")
-            || foundItem.getName().equals("berries")
-            || foundItem.getName().equals("fish")
-            || foundItem.getName().equals("mushroom")) {
-          try {
-            game.eatItem(foundItem.getName());
-          } catch (InventoryEmptyException | ItemNotEdibleException |
-                   ConcurrentModificationException e) {
-            //System.out.println(e);
-          }
-        } else if (foundItem.getName().equals("machete")
-            || foundItem.getName().equals("cloth")
-            || foundItem.getName().equals("log")
-            || foundItem.getName().equals("paddle")
-            || foundItem.getName().equals("rocks")
-            || foundItem.getName().equals("rope")
-            || foundItem.getName().equals("steelpipe")) {
-          try {
-            int x = (game.getPlayer().getX() + 64) / 48;
-            int y = (game.getPlayer().getY() + 64) / 48;
-            foundItem.setX(x);
-            foundItem.setY(y);
-            game.transferItemFromTo(game.getPlayerInventory(), game.getCurrentLocationInventory(),
-                foundItem.getName());
-          } catch (InventoryEmptyException |
-                   ConcurrentModificationException |
-                   NoEnoughStaminaException e) {
-            //System.out.println(e);
-          }
-        }
-      }
+      enterPressed = true;
     }
 
   }
@@ -197,6 +153,22 @@ public class KeyHandler implements KeyListener {
 
   public boolean isInventoryState() {
     return inventoryState;
+  }
+
+  public boolean isEnterPressed() {
+    return enterPressed;
+  }
+
+  public void setEnterPressed(boolean enterPressed) {
+    this.enterPressed = enterPressed;
+  }
+
+  public boolean isBuildPressed() {
+    return buildPressed;
+  }
+
+  public void setBuildPressed(boolean buildPressed) {
+    this.buildPressed = buildPressed;
   }
 
   public void setGame(Game game) {
