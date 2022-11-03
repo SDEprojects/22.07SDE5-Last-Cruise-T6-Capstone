@@ -148,6 +148,40 @@ public class GameUI {
     return itemIndex;
   }
 
+  private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
+    int length = (int)g2.getFontMetrics().getStringBounds(gameTitle, g2).getWidth();
+    int x = screenWidth/2-length/2;
+    return x;
+  }
+
+  public void loseScreen(Graphics2D g2, int tileSize, int screenWidth) {
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80F));
+    String text = "GAME OVER!!";
+    int x = getXforCenteredText(text, g2, screenWidth);
+    int y = tileSize * 5;
+    g2.setColor(Color.white);
+    g2.drawString(text, x, y);
+    g2.setColor(new Color(0, 0, 0));
+    g2.fillRect(0, 0, screenWidth, tileSize);
+
+    //shadow
+    g2.setColor(Color.white);
+    g2.drawString(text, x + 5, y + 5);
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+    text = "NEW GAME";
+    x = getXforCenteredText(text, g2, screenWidth);
+    y += tileSize*5;
+    g2.drawString(text, tileSize*6, tileSize*7);
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+    text = "EXIT GAME";
+    x = getXforCenteredText(text, g2, screenWidth);
+    y += tileSize*4;
+    g2.drawString(text, tileSize*6, tileSize*8);
+  }
+
   public int getSlotCol() {
     return slotCol;
   }

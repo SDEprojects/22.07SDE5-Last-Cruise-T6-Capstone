@@ -139,6 +139,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 //    if (game.getState().equals(State.TITLE)) {
 //      view.titleScreen(g2, tileSize, screenWidth);
+    if (game.getState().equals(State.LOSE)) {
+      gameUI.loseScreen(g2, tileSize, screenWidth);
 
     } else {
 
@@ -306,4 +308,5 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
 }
+
 
