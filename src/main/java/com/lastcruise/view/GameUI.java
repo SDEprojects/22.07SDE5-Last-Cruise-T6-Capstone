@@ -8,14 +8,19 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.imageio.ImageIO;
 
 
 public class GameUI {
 
   private int slotCol = 0;
   private int slotRow = 0;
+
+  private int winGameBoxPosition = 0;
 
   private HashMap<Integer, String> itemNames;
 
@@ -28,8 +33,9 @@ public class GameUI {
     g2.fillRect(24, 28, rectWidth, 24);
     g2.setColor(Color.red);
     int staminaWidth = playerStamina * rectWidth / 100;
-    g2.fillRect(24, 28, staminaWidth ,24);
+    g2.fillRect(24, 28, staminaWidth, 24);
   }
+
   public void drawInventory(GamePanel gp, Graphics2D g2, Inventory playerInventory) {
 
     // frame
@@ -55,7 +61,7 @@ public class GameUI {
       itemNames.put(index, item.getName());
       //System.out.println("Item: " + item.getName() + " Index: " + item.getIndex());
 
-      if(index == 3) {
+      if (index == 3) {
         slotX = slotXstart;
         slotY += gp.getTileSize();
       }
@@ -69,13 +75,8 @@ public class GameUI {
     int cursorWidth = gp.getTileSize();
     int cursorHeight = gp.getTileSize();
 
-    // draw cursor
-    g2.setColor(Color.white);
-    // set the box width
-    g2.setStroke(new BasicStroke(3));
-    // draw cursor
-    g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 25, 25);
-
+    // draws a white outline box around the current selected item
+    drawWhiteBox(g2, cursorX, cursorY, cursorWidth, cursorHeight, 25, 25);
 
     // ITEM DESCRIPTION FRAME
     // description frame
@@ -94,14 +95,77 @@ public class GameUI {
     int itemIndex = getItemIndex();
 
     // draw the item description text
-    if(itemIndex < itemNames.size()){
-      String itemDescription = playerInventory.getInventory().get(itemNames.get(itemIndex)).getName();
+    if (itemIndex < itemNames.size()) {
+      String itemDescription = playerInventory.getInventory().get(itemNames.get(itemIndex))
+          .getName();
       String cap = itemDescription.substring(0, 1).toUpperCase() + itemDescription.substring(1);
       g2.drawString(cap, textX, textY);
     }
-
-
   }
+
+  public void winScreen(Graphics2D g2, int tileSize, int screenWidth) {
+    BufferedImage winImage = null;
+    try {
+      winImage = ImageIO.read(getClass().getResourceAsStream("/win/win_image.png"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80F));
+    String gameTitle = "YOU WIN!!";
+    int x = getXforCenteredText(gameTitle, g2, screenWidth);
+    int y = tileSize * 2;
+    g2.setColor(Color.white);
+    g2.drawString(gameTitle, x, y);
+    g2.setColor(new Color(0, 0, 0));
+    g2.fillRect(0, 0, screenWidth, tileSize);
+    //shadow
+    g2.setColor(Color.white);
+    g2.drawString(gameTitle, x + 5, y + 5);
+
+    //Image
+    x = screenWidth / 2 - (tileSize * 2) / 2;
+    y += tileSize * 2;
+    g2.drawImage(winImage, tileSize * 5, tileSize * 3, tileSize * 6, tileSize * 6, null);
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+    gameTitle = "NEW GAME";
+    x = getXforCenteredText(gameTitle, g2, screenWidth);
+    y += tileSize*5;
+    g2.drawString(gameTitle, tileSize*7, tileSize*9);
+
+    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+    gameTitle = "EXIT GAME";
+    x = getXforCenteredText(gameTitle, g2, screenWidth);
+    y += tileSize*4;
+    g2.drawString(gameTitle, tileSize*7, tileSize*10);
+
+    // white box position for exit game
+    int exit_game_x = (tileSize*7) - 24;
+    int exit_game_y = (tileSize*9) + 14;
+
+    // white box position for new game
+    int new_game_x = (tileSize*7) - 24;
+    int new_game_y = (tileSize*8) + 14;
+
+    if (getWinGameBoxPosition() == 0) {
+      drawWhiteBox(g2, new_game_x, new_game_y, tileSize*4, tileSize, 25, 25);
+    } else if (getWinGameBoxPosition() == 1) {
+      drawWhiteBox(g2, exit_game_x, exit_game_y, tileSize*4, tileSize, 25, 25);
+    }
+  }
+
+
+
+  public void drawWhiteBox(Graphics2D g2, int cursorX, int cursorY, int cursorWidth,
+      int cursorHeight, int arcWidth, int arcHeight) {
+    // draw cursor
+    g2.setColor(Color.white);
+    // set the box width
+    g2.setStroke(new BasicStroke(3));
+    // draw cursor
+    g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 25, 25);
+  }
+
   public void drawHelpMenu(int x, int y, int width, int height, Graphics2D g2) {
     drawSubWindow(x, y, width, height, g2);
     g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24));
@@ -122,7 +186,9 @@ public class GameUI {
       g2.drawString(helpMenu[i], indentX, indentY + 20 * (i + 1));
     }
   }
-  public void drawStringInSubWindow(int x, int y, int width, int height, Graphics2D g2, String[] lines) {
+
+  public void drawStringInSubWindow(int x, int y, int width, int height, Graphics2D g2,
+      String[] lines) {
     drawSubWindow(x, y, width, height, g2);
     int indentX = x + 48 * 2;
     int indentY = y + 48;
@@ -130,6 +196,13 @@ public class GameUI {
       g2.drawString(lines[i], indentX, indentY + 20 * (i + 1));
     }
   }
+
+  private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
+    int length = (int)g2.getFontMetrics().getStringBounds(gameTitle, g2).getWidth();
+    int x = screenWidth/2-length/2;
+    return x;
+  }
+
   public void drawSubWindow(int x, int y, int width, int height, Graphics2D g2) {
 
     Color color = new Color(0, 0, 0, 210);
@@ -162,6 +235,14 @@ public class GameUI {
 
   public void setSlotRow(int slotRow) {
     this.slotRow = slotRow;
+  }
+
+  public int getWinGameBoxPosition() {
+    return winGameBoxPosition;
+  }
+
+  public void setWinGameBoxPosition(int winGameBoxPosition) {
+    this.winGameBoxPosition = winGameBoxPosition;
   }
 
 

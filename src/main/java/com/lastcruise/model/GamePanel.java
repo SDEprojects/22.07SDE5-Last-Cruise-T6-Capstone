@@ -16,6 +16,7 @@ import java.awt.Graphics2D;
 import java.net.URL;
 import java.util.ConcurrentModificationException;
 import javax.swing.JPanel;
+import org.w3c.dom.ls.LSOutput;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -94,8 +95,17 @@ public class GamePanel extends JPanel implements Runnable {
       if (keyHandler.isEnterPressed()){
         dropItem();
       }
-
 //      soundEffect.dropFx();
+    }
+
+    if (game.getState() == State.WIN) {
+      if (keyHandler.isEnterPressed()) {
+        if (gameUI.getWinGameBoxPosition() == 0) {
+          game.setState(State.TITLE);
+        } else {
+          System.exit(0);
+        }
+      }
     }
     if (keyHandler.isBuildPressed()) {
       game.craftRaft();
@@ -135,7 +145,7 @@ public class GamePanel extends JPanel implements Runnable {
     //if (gameState == title){
      // titleScreen()}
     if (game.getState().equals(State.WIN)) {
-      view.winScreen(g2, tileSize, screenWidth);
+      gameUI.winScreen(g2, tileSize, screenWidth);
 
 //    if (game.getState().equals(State.TITLE)) {
 //      view.titleScreen(g2, tileSize, screenWidth);

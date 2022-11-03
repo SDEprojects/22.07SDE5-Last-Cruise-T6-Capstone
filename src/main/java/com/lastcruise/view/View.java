@@ -1,5 +1,6 @@
 package com.lastcruise.view;
 import com.lastcruise.model.GameText;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -11,9 +12,15 @@ import javax.imageio.ImageIO;
 public class View {
 
 
+    public int getWinGameBoxPosition() {
+        return winGameBoxPosition;
+    }
 
+    public void setWinGameBoxPosition(int winGameBoxPosition) {
+        this.winGameBoxPosition = winGameBoxPosition;
+    }
 
-
+    private int winGameBoxPosition = 0;
 
 
     // ================================ ORIGINAL GAME PLAY========================================
@@ -103,7 +110,6 @@ public class View {
         x = getXforCenteredText(gameTitle, g2, screenWidth);
         y += tileSize;
         g2.drawString(gameTitle, x, y);
-
     }
 
      private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
@@ -147,6 +153,31 @@ public class View {
         x = getXforCenteredText(gameTitle, g2, screenWidth);
         y += tileSize*4;
         g2.drawString(gameTitle, tileSize*7, tileSize*10);
+
+        //int box_y = (y + (tileSize*4));
+        int box_x = getXforCenteredText(gameTitle, g2, screenWidth);
+
+        // white box position for exit game
+        int exit_game_x = (tileSize*7) - 24;
+        int exit_game_y = (tileSize*9) + 14;
+
+        // white box position for new game
+        int new_game_x = (tileSize*7) - 24;
+        int new_game_y = (tileSize*8) + 14;
+
+        //
+
+        drawWhiteBox(g2, new_game_x, new_game_y, tileSize, tileSize, 25, 25);
+    }
+
+    public void drawWhiteBox(Graphics2D g2, int cursorX, int cursorY, int cursorWidth,
+        int cursorHeight, int arcWidth, int arcHeight) {
+        // draw cursor
+        g2.setColor(Color.white);
+        // set the box width
+        g2.setStroke(new BasicStroke(5));
+        // draw cursor
+        g2.drawRoundRect(cursorX, cursorY, cursorWidth*4, cursorHeight, 25, 25);
     }
 
 
