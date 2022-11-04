@@ -1,6 +1,5 @@
 package com.lastcruise.model.tile;
 
-import com.lastcruise.model.GamePanel;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.IOException;
