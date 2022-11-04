@@ -1,16 +1,13 @@
 package com.lastcruise.view;
 
-import com.lastcruise.model.GamePanel;
 import com.lastcruise.model.Inventory;
 import com.lastcruise.model.Item;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 
@@ -20,7 +17,6 @@ public class GameUI {
   private int slotCol = 0;
   private int slotRow = 0;
   private int rowSelection = 0;
-
   private int winGameBoxPosition = 0;
 
   private HashMap<Integer, String> itemNames;
@@ -205,7 +201,11 @@ public class GameUI {
     }
   }
 
-
+  private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
+    int length = (int)g2.getFontMetrics().getStringBounds(gameTitle, g2).getWidth();
+    int x = screenWidth/2-length/2;
+    return x;
+  }
 
   public void drawWhiteBox(Graphics2D g2, int cursorX, int cursorY, int cursorWidth,
       int cursorHeight, int arcWidth, int arcHeight) {
@@ -265,11 +265,7 @@ public class GameUI {
     return itemIndex;
   }
 
-  private int getXforCenteredText(String gameTitle, Graphics2D g2, int screenWidth) {
-    int length = (int)g2.getFontMetrics().getStringBounds(gameTitle, g2).getWidth();
-    int x = screenWidth/2-length/2;
-    return x;
-  }
+
 
   public void loseScreen(Graphics2D g2, int tileSize, int screenWidth) {
 

@@ -1,9 +1,13 @@
-package com.lastcruise.model;
+package com.lastcruise.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lastcruise.model.GameMap.InvalidLocationException;
+import com.lastcruise.model.GameItems;
+import com.lastcruise.model.GameMap;
+import com.lastcruise.model.Inventory;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
-import com.lastcruise.model.entity.Entity;
+import com.lastcruise.model.Item;
+import com.lastcruise.model.Location;
+import com.lastcruise.model.State;
 import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.entity.Player.ItemNotEdibleException;
 import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
@@ -84,12 +88,6 @@ public class Game {
         return String.valueOf(player.getStamina());
     }
 
-    public void moveLocation(String[] direction)
-        throws InvalidLocationException, NoEnoughStaminaException {
-        gameMap.updateCurrentLocation(direction);
-
-
-    }
 
     public void transferItemFromTo(Inventory from, Inventory to, String itemName)
         throws InventoryEmptyException, NoEnoughStaminaException {
@@ -104,14 +102,6 @@ public class Game {
             Item removed = from.remove(itemName);
             to.add(itemName, removed);
         }
-    }
-
-    public String inspectItem(String[] command) {
-        String item = command[1].toLowerCase();
-        if (getCurrentLocationItems().containsKey(item)) {
-            return getCurrentLocationItems().get(item).getDescription();
-        }
-        return null;
     }
 
     public void eatItem(String itemName) throws InventoryEmptyException, ItemNotEdibleException {

@@ -1,20 +1,9 @@
-package com.lastcruise.controller;
+package com.lastcruise.view;
 
-import com.lastcruise.model.Game;
-import com.lastcruise.model.GamePanel;
-import com.lastcruise.model.Inventory.InventoryEmptyException;
-import com.lastcruise.model.Item;
+import com.lastcruise.controller.Game;
 import com.lastcruise.model.State;
-import com.lastcruise.model.entity.Entity;
-import com.lastcruise.model.entity.Player;
-import com.lastcruise.model.entity.Player.ItemNotEdibleException;
-import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
-import com.lastcruise.view.GameUI;
-import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 
 public class KeyHandler implements KeyListener {
 

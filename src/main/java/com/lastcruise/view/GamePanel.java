@@ -1,14 +1,20 @@
-package com.lastcruise.model;
+package com.lastcruise.view;
 
-import com.lastcruise.controller.KeyHandler;
+import com.lastcruise.model.Collision;
+import com.lastcruise.controller.Game;
+import com.lastcruise.model.GameMap;
+import com.lastcruise.model.Inventory;
+import com.lastcruise.model.Item;
+import com.lastcruise.model.Location;
+import com.lastcruise.model.State;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
-import com.lastcruise.model.entity.Entity;
 import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.entity.Player.ItemNotEdibleException;
 import com.lastcruise.model.entity.Player.NoEnoughStaminaException;
 import com.lastcruise.model.tile.TileManager;
-import com.lastcruise.view.View;
-import com.lastcruise.view.GameUI;
+import com.lastcruise.view.audio.AllSounds;
+import com.lastcruise.view.audio.Music;
+import com.lastcruise.view.audio.SoundEffect;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;

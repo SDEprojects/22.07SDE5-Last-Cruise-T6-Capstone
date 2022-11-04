@@ -1,4 +1,4 @@
-package com.lastcruise.model;
+package com.lastcruise.view.audio;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

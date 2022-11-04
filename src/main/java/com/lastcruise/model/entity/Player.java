@@ -1,11 +1,8 @@
 package com.lastcruise.model.entity;
 
-import com.lastcruise.controller.KeyHandler;
 import com.lastcruise.model.GameItems;
-import com.lastcruise.model.GamePanel;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.Item;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
