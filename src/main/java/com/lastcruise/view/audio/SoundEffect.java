@@ -95,4 +95,7 @@ public class SoundEffect {
       ex.printStackTrace();
     }
   }
+  public void setPlayedOnce(boolean playedOnce) {
+    isPlayedOnce = playedOnce;
+  }
 }

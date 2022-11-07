@@ -234,6 +234,7 @@ public class GamePanel extends JPanel implements Runnable {
     keyHandler.setGame(game);
     keyHandler.setGameUI(gameUI);
     game.setPlayer(this.player);
+    soundEffect.setPlayedOnce(false);
   }
   public void setupGame() {
     game.setState(State.TITLE);
