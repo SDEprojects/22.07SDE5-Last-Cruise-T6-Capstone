@@ -106,13 +106,11 @@ public class GameUI {
       slotX += gp.getTileSize();
       item.setIndex(index);
       itemNames.put(index, item.getName());
-      //System.out.println("Item: " + item.getName() + " Index: " + item.getIndex());
 
       if (index == 3) {
         slotX = slotXstart;
         slotY += gp.getTileSize();
       }
-
       index++;
     }
 
