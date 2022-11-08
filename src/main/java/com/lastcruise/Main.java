@@ -1,17 +1,7 @@
 package com.lastcruise;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lastcruise.controller.Controller;
-import com.lastcruise.model.AllSounds;
-import com.lastcruise.model.Game;
-import com.lastcruise.model.GamePanel;
-import com.lastcruise.model.Music;
-import com.lastcruise.model.SoundEffect;
+import com.lastcruise.view.GamePanel;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Map;
 import javax.swing.JFrame;
 
 public class Main {
@@ -21,8 +11,6 @@ public class Main {
     JFrame window = new JFrame();
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setResizable(false);
-    window.setTitle("Last Cruise");
-
     GamePanel gamePanel =  new GamePanel();
     window.add(gamePanel);
 
@@ -35,6 +23,7 @@ public class Main {
     gamePanel.setupGame();
 
     gamePanel.startGameThread();
+    gamePanel.playBackgroundMusic();
 
 
 

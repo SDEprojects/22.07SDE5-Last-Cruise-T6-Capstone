@@ -1,11 +1,8 @@
 package com.lastcruise.model.entity;
 
-import com.lastcruise.controller.KeyHandler;
 import com.lastcruise.model.GameItems;
-import com.lastcruise.model.GamePanel;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.Item;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -14,6 +11,7 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
     private int stamina = 100;
+    private int sleepTimer = 0;
     // CONSTRUCTOR
         // creates a small collide-able area in the player's sprite
         // sets the initial player position
@@ -84,8 +82,7 @@ public class Player extends Entity {
         if (getMovementCounter() < 30) {
             if (stamina < 0) {
                 setSpeed(0);
-                // throw not enough stamina exception
-                System.out.println("you ran out of stamina");
+                stamina = 0;
             } else if (stamina == 0) {
                 setSpeed(0);
             } else if (stamina <= 25) {
@@ -163,19 +160,12 @@ public class Player extends Entity {
         super(name);
     }
 
-    public void reduceStaminaMove() throws NoEnoughStaminaException {
-        int energy = 15;
-        if (hasEnoughStamina(energy)) {
-            stamina -= energy;
-        } else {
-            throw new NoEnoughStaminaException();
-        }
-    }
 
     public void reduceStaminaPickUp() throws NoEnoughStaminaException {
-        int energy = 25;
+        int energy = 10;
         if (hasEnoughStamina(energy)) {
             stamina -= energy;
+            System.out.println("Staminia: " + stamina);
         } else {
             throw new NoEnoughStaminaException();
         }
@@ -197,9 +187,12 @@ public class Player extends Entity {
             throw new ItemNotEdibleException();
         }
     }
-
     public void sleep(){
-        stamina = 100;
+        sleepTimer++;
+        if (stamina < 100 && sleepTimer > 5) {
+            stamina++;
+            sleepTimer = 0;
+        }
     }
 
     public int getStamina() {

@@ -1,7 +1,6 @@
 package com.lastcruise.model;
 
 import com.lastcruise.model.entity.Entity;
-import com.lastcruise.model.entity.Player;
 import com.lastcruise.model.tile.Tile;
 
 public class Collision {

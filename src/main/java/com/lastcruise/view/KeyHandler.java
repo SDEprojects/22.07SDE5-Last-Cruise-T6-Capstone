@@ -1,16 +1,13 @@
-package com.lastcruise.controller;
+package com.lastcruise.view;
 
-import com.lastcruise.model.Game;
-import com.lastcruise.model.GamePanel;
+import com.lastcruise.controller.Game;
 import com.lastcruise.model.State;
-import com.lastcruise.view.GameUI;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
 
 public class KeyHandler implements KeyListener {
 
-  private boolean upPressed, downPressed, leftPressed, rightPressed;
+  private boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, buildPressed;
 
   private boolean inventoryState = false;
 
@@ -25,7 +22,10 @@ public class KeyHandler implements KeyListener {
   @Override
   public void keyPressed(KeyEvent e) {
     int code = e.getKeyCode();
-
+    if (game.getState() == State.TITLE) {
+      System.out.println("how about here");
+      titleState(code);
+    }
     if (code == KeyEvent.VK_I) {
       if (isInventoryState()) {
         inventoryState = false;
@@ -37,13 +37,48 @@ public class KeyHandler implements KeyListener {
         System.out.println("Inventory state: " + inventoryState);
       }
     }
+    if (code == KeyEvent.VK_H) {
+      if (game.getState() == State.HELP) {
+        game.setState(State.PLAY);
+      } else {
+        game.setState(State.HELP);
+      }
+    }
+    if (code == KeyEvent.VK_Z) {
+      if (game.getState() == State.SLEEP) {
+        game.setState(State.PLAY);
+      } else {
+        game.setState(State.SLEEP);
+      }
+    }
 
     if (game.getState() == State.PLAY) {
       playState(code);
     }
-
     if (game.getState() == State.INVENTORY) {
       inventoryState(code);
+    }
+
+    if (code == KeyEvent.VK_B){
+      buildPressed = true;
+    }
+
+    if (code == KeyEvent.VK_E){
+      boolean win = game.escapeIsland();
+      if(win){
+        System.out.println("You escaped the island!");
+        game.setState(State.WIN);
+      }else {
+        System.out.println("You can not escape the island without a raft!");
+      }
+    }
+
+    if (code == KeyEvent.VK_P){
+      game.setState(State.WIN);
+    }
+
+    if (game.getState() == State.WIN) {
+      winState(code);
     }
 
   }
@@ -65,7 +100,21 @@ public class KeyHandler implements KeyListener {
       rightPressed = false;
     }
   }
-
+  public void titleState(int code) {
+      if (code == KeyEvent.VK_W) {
+      if (gameUI.getRowSelection() != 0) {
+        gameUI.setRowSelection(gameUI.getRowSelection() - 1);
+      }
+    }
+    if (code == KeyEvent.VK_S) {
+      if (gameUI.getRowSelection() != 2) {
+        gameUI.setRowSelection(gameUI.getRowSelection() + 1);
+      }
+    }
+    if (code == KeyEvent.VK_ENTER) {
+      enterPressed = true;
+    }
+  }
   public void playState(int code) {
     if (code == KeyEvent.VK_W) {
       upPressed = true;
@@ -87,25 +136,39 @@ public class KeyHandler implements KeyListener {
       // game state = play
     }
     if (code == KeyEvent.VK_W) {
-      if(gameUI.getSlotCol() != 0){
+      if (gameUI.getSlotCol() != 0) {
         gameUI.setSlotCol(gameUI.getSlotCol() - 1);
       }
     }
     if (code == KeyEvent.VK_A) {
-      if(gameUI.getSlotRow() != 0) {
+      if (gameUI.getSlotRow() != 0) {
         gameUI.setSlotRow(gameUI.getSlotRow() - 1);
       }
     }
     if (code == KeyEvent.VK_S) {
-      if(gameUI.getSlotCol() != 1) {
+      if (gameUI.getSlotCol() != 1) {
         gameUI.setSlotCol(gameUI.getSlotCol() + 1);
       }
     }
     if (code == KeyEvent.VK_D) {
-      if(gameUI.getSlotRow() != 3) {
+      if (gameUI.getSlotRow() != 3) {
         gameUI.setSlotRow(gameUI.getSlotRow() + 1);
       }
+    }
+    if (code == KeyEvent.VK_ENTER) {
+      enterPressed = true;
+    }
+  }
 
+  public void winState(int code) {
+    if(code == KeyEvent.VK_W) {
+      gameUI.setWinGameBoxPosition(0);
+    }
+    if(code == KeyEvent.VK_S) {
+      gameUI.setWinGameBoxPosition(1);
+    }
+    if(code == KeyEvent.VK_ENTER){
+      enterPressed = true;
     }
   }
 
@@ -127,6 +190,22 @@ public class KeyHandler implements KeyListener {
 
   public boolean isInventoryState() {
     return inventoryState;
+  }
+
+  public boolean isEnterPressed() {
+    return enterPressed;
+  }
+
+  public void setEnterPressed(boolean enterPressed) {
+    this.enterPressed = enterPressed;
+  }
+
+  public boolean isBuildPressed() {
+    return buildPressed;
+  }
+
+  public void setBuildPressed(boolean buildPressed) {
+    this.buildPressed = buildPressed;
   }
 
   public void setGame(Game game) {
